@@ -4,5 +4,5 @@
 2. Each sub makefile compile all sources and saves objectfiles in main build directory
 3. The main makefile linking all object files into final product
 
-![](../drawings/Build_System.png)
+![](./drawings/Build_System.png)
 

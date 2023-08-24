@@ -1,4 +1,4 @@
-# **Basic built-in libc functionality**
+# ***Basic built-in libc functionality***
 
 ## ***kernel/klib.h***
 

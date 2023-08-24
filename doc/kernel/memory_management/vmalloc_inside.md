@@ -1,8 +1,9 @@
-# *"Higher half memory manager"*
+# ***Higher half memory manager***
 Purpose of vmalloc and vfree is to manage memory space specified in _<kernel/arch.h>_. It allocate chunks with a size that is a multiple of the page size and aligned to page boundary. That allow it to allocate memory for DMA or paging structures.
 
-# _<kernel/klib/\_internal\_vmalloc.h>_
+# _<kernel/klib/\_internal_vmalloc.h>_
 Table of contents:   
+
 0. [Used data structures](#data-structures)   
 1. [Allocate memory](#vmalloc)   
 2. [Release memory](#vfree)   

@@ -1,9 +1,10 @@
 # ***Divide CPU by all tasks***
-Table of contents:
+Table of contents:   
+
 0. [Strategy](#scheduling-strategy)   
 1. [Used data structures](#used-data-structures)   
 
-2. API
+2. [API](#api)   
     - [Init scheduler](#initialization)   
     - [Get tcb](#get-tcb)   
     - [Get next task](#get-next-task)   
@@ -39,12 +40,12 @@ typedef enum {
 	READY,		/* Ready for get a CPU time */
 	RUNNING,	/* Already running */
 	WAITING, 	/* Waiting for event */
-    ZOMBIE      /* Inactive, waiting for parent attention */
+	ZOMBIE		/* Inactive, waiting for parent attention */
 } task_state_t;
 
 typedef enum {
 	USER,		/* User programs (lowest priority) */
-    OS  		/* Os programs (highest priority) */
+	OS  		/* Os programs (highest priority) */
 } task_priority_t;
 
 struct queue {

@@ -1,5 +1,6 @@
 # ***File from running program perspective***
 Table of contents:   
+
 0. [Subsystem overview](#fd-subsystem-overview)   
 1. [Data structures](#data-structures)   
 
@@ -12,7 +13,7 @@ Table of contents:
 ![](../../drawings/fd_subsystem.png)
 
 
-#  <kernel/fd.h>
+#  _<kernel/fd.h>_
 ## Data structures
 ### File descriptor
 ```c

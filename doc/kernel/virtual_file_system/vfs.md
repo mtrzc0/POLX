@@ -1,5 +1,13 @@
+# TODO
+- [x] CHRDEV   
+- [ ] BLKDEV   
+- [ ] PIPE   
+- [ ] SYMLINK   
+- [x] MNTPT   
+
 # ***Virtual filesystem***
 Table of contents:   
+
 0. [What it is](#what-is-virtual-file-system)   
 1. [Internal structure](#internal-structure-of-vfs)   
 
@@ -16,17 +24,11 @@ Table of contents:
 
 # What is virtual file system
 Virtual file system is an abstraction to unify access to data stored on helper storage or accesible over a network. That abstraction is done via layers like shown below.
-![VFS layers](../../drawings/vfs_layers.png)
+![VFS layers](../../drawings/vfs_layers.png)   
+
 User programs doesn't have to know where the file is stored physicaly it just use same interface to access everything, leaving rest job to vfs.   
 
 # _<kernel/vfs.h>_
-
-TODO:   
-- [ ] CHRDEV   
-- [ ] BLKDEV   
-- [ ] PIPE   
-- [ ] SYMLINK   
-- [x] MNTPT   
 
 ## Internal structure of VFS
 Virtual file system is build on tree of the vnodes. Each vfs_node represent one file that can be interpreted as regular file, dir, block device and so on, it hold functions pointers to its filesystem that can serve all requests relating to that vfs_node. VFS is responsible for wrappers for vfs_node operations.
@@ -37,7 +39,7 @@ struct vfs_node {
 	char name[MAX_FILENAME]; /* Filename */
 	// Place for permissions, owner etc
 	vfs_type v_type;	 /* Type of file */
-    size_t ino; 		 /* Unique number used by filesystem */
+	size_t ino;  		 /* Unique number used by filesystem */
 	size_t size;		 /* Size of file */
 	size_t active_fds;	 /* Active file descriptors counter */
 	vfs_ops_t op;		 /* Pointers to possible operations on file */
@@ -47,7 +49,7 @@ struct vfs_node {
 	vfs_node_ptr_t *first_child, *last_child;
 	vfs_node_ptr_t *prev_sibling, *next_sibling;
     
-    void *data;          /* Private fs data */
+	void *data;	  /* Private fs data */
 };
 typedef struct vfs_node vfs_node_t;
 ```
