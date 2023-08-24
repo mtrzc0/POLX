@@ -1,9 +1,11 @@
 # ***Treat device as file***
 Table of contents:   
+
 0. [API](#api)   
     - [Init](#initialization)   
     - [Add device](#add-device)   
     - [Remove device](#remove-device)   
+ 
 1. [Pseudo devices](#pseudo-devices)   
     - [/dev/zero](#zero)   
     - [/dev/stdout](#stdout)   

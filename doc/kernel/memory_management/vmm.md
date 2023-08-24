@@ -1,11 +1,12 @@
-# ***"Managing address spaces"***
-This module is responsible for creating/destroing address spaces for process and to handle memory mapping with-in.  Module is also used as wrapper to arch dependent paging functions. 
-
 # TODO
 1. Handling child process to write into forked data (vmm_page_fault_handler)   
 
+# ***Managing user address spaces***
+This module is responsible for creating/destroing address spaces for process and to handle memory mapping with-in.  Module is also used as wrapper to arch dependent paging functions. 
+
 # _<kernel/vmm.h>_
 Table of contents:   
+
 0. [Used data structures](#data-structures)   
 1. [Paging wrappers](#paging-wrappers-and-misc)    
 
@@ -24,7 +25,6 @@ Table of contents:
 ### Memory region
 ```c
 /* Privilege and access flags */
-//#define VMM_SHARED      0x1
 #define VMM_RW		(0x1 << 1)	/* Compatible with paging misc */
 #define VMM_USER 	(0x1 << 2)	/* Compatible with paging misc */
 #define VMM_FORK	(0x1 << 3)	/* DO NOT use with paging misc */
@@ -44,9 +44,9 @@ typedef struct vmm_region region_t;
 ### Task VM
 ```c
 struct vmm_aspace {
-    uintptr_t pd;
-    uintptr_t code_entry;
-    uintptr_t data_end;     /* End of data segment */
+	uintptr_t pd;
+	uintptr_t code_entry;
+	uintptr_t data_end;     /* End of data segment */
     
 	size_t page_counter;
 	region_t first;

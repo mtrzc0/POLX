@@ -1,5 +1,6 @@
 # ***Path to vfs_node vfs tree***
 Table of contents:   
+
 0. [API](#api)   
     - [Init](#initialization)   
     - [Get vfs_node](#get-vfs_node)   

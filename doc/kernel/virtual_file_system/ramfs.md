@@ -68,4 +68,4 @@ return true
 ```c
 int ramfs_readdir(vfs_node_ptr_t node, size_t no, vfs_dirent_t *dent);
 ```
-- write name of _no_ child  _node_ into _dent_ struct
+write name of _no_ child  _node_ into _dent_ struct

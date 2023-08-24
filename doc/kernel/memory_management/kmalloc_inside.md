@@ -3,11 +3,12 @@
 - [ ] uncomment taskbin after implementing tasks (kmalloc.c, \_internal_malloc.h)
 - [ ] implement merge_adjacent_chunks function (kmalloc.c)
 
-#  *"All memory pieces are chunks"*
+#  ***All memory pieces are chunks***
 [kmalloc](#malloc) and [kfree](#free) will manage the address space indicated by _<kernel/arch.h>_. That memory will be divided into ordered pieces called chunks. Chunks will be indicated by their [headers](#chunk_header) which contain required informations, the chunk size will be aligned to 16 bits. Released chunks will be connected into linked list and grouped by size in coresponding [bins](#bins). Malloc will try to allocate a new chunk from previously freed chunks or free memory, if fail it will try to merge adjacent free chunks before calling kernel panic.
 
 # _<kernel/klib/\_internal\_kmalloc.h>_
 Table of contents:   
+
 0. [Used data structures](#data-structures)   
 1. [Allocating memory](#kmalloc)   
 2. [Freeing memory](#free)   
@@ -104,9 +105,6 @@ _All sub functions have to get already aligned size!_
     - Return new chunk address
 - Else:
     - Return chunk address
-
-### Merging adjacent chunks
- //TODO
 
 # kfree
 ## Bins

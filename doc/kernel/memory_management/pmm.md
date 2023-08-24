@@ -1,8 +1,9 @@
-# *"Just manage phisical memory"*
+# ***Just manage phisical memory***
 The physical memory manager divides the available physical memory (RAM) into fixed-length blocks called frames and handles their allocation and release.   
 
 ## _<kernel/pmm.h>_
 Table of contents:    
+
 0. [Global data](#global-data)   
 1. [Initialization](#initialization)   
 2. [Frame allocation](#allocation)   
@@ -29,20 +30,20 @@ Create a structure that stores information about free and allocated physical mem
 ```c
 uintptr_t pmm_get_frame(void);
 ```
-* Find free frame and return its address.   
+Find free frame and return its address.   
 
 ```c
 uintptr_t pmm_get_pool(size_t frames);
 ```
-* Find physical contiguous memory space and return starting address
+Find physical contiguous memory space and return starting address
 
 ## **Release**
 ```c
 void pmm_free_frame(uintptr_t paddr);
 ```
-* Just mark frame as free.   
+Just mark frame as free.   
 
 ```c
 void pmm_free_pool(uintptr_t start_of_pool, size_t frames);
 ```
-* Mark all frames from pool as free
+Mark all frames from pool as free

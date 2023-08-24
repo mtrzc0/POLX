@@ -1,7 +1,11 @@
+# TODO
+- [ ] Copy on write mechanism   
+
 # ***Virtual Memory***
 Virtual memory is a physical memory management mechanism that envolve invisible (from process view) abstraction of phisical memory. Its allows processes to think they have all the address space to use, while their data can be stored in different locations in physical memory or moved to the helper memory. It also provides virtual addressing scheme.   
    
 Table of contents:   
+
 0. [CPU](#from-cpu-perspective)   
 1. [Kernel](#kernel-perspective)   
 2. [Process](#process-perspective)   
@@ -42,7 +46,7 @@ After bootstrap we have kernel mapped to 0xC0000000 address in virtual memory. A
 ## Demand paging and COW mechanism
 **Demand paging** is implemented by reserving some region of virtual adress space, but not allocating any physical frames. When kernel want to use some piece of that region page fault occur and page fault handler are going to allocate new frame. When page fault occur in process address space page fault will call virtual memory page fault handler which is going to check if process have permision to use that address, and then it will alocate new frame.   
 
-// TODO
+// TODO:   
 **Copy on write mechanism** is used to share data by many processes to avoid multiple copies of same data. It is implemented by removing write permision on pages from specyfied region of memory. If *process A* want to write into that region page fault will occur then vmm will check its permissions and it will make mirror copy of shared frame which will be mapped into *process A* AS with write permission. If region was shared only by two processes vmm will change original frame permision into writable during next page fault caused by *process B* trying to access shared region.
 
 

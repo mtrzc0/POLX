@@ -1,12 +1,13 @@
 # ***Kernel bootstrap i386***
 [Processor state after bootloader loads the kernel](https://www.gnu.org/software/grub/manual/multiboot/html_node/Machine-state.html)   
 **Bootstrap routine**:    
+
 1. [Paging](#paging)   
 2. Start kernel main function
 3. [GDT](#global-descriptor-table)     
 4. [IDT](#interrupt-descriptor-table)   
 5. [TSS](#task-state-segment)   
-6. Timer init
+6. [Timer init](#timer-initialization)   
 7. [PMM init](#physical-memory-manager-initialization)   
 
 

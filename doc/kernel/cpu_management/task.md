@@ -1,13 +1,14 @@
 # TODO
 - [ ] Implement task id generator with posibibility to use previously destroyed id's
 
-# ***"CPU abstraction"***
+# ***CPU abstraction***
 Table of contents:    
+
 0. [What is task](#what-is-task)   
 1. [Tasks tree](#tasks-tree)   
 2. [Task control block](#task-control-block)   
 
-3. [Task management](#task-management)    
+3. [API](#api)    
     - [Create](#task-creation)   
     - [Destroy](#task-destroing)   
     - [Switch](#task-switching)   
@@ -18,7 +19,8 @@ Task is a basic execution unit used to virtualize the physical core of the proce
 # Tasks tree
 ![](../../drawings/task_tree.png)
 
-#  Task Control Block
+# _<kernel/task.h>_
+##  Task Control Block
 ```c
 struct tcb {
 	/* General informations */
@@ -54,21 +56,31 @@ struct tcb {
 typedef struct tcb task_t;
 ```
 
-# Task management
-## Task creation
+## API
+### Task creation
+```c
+task_t *task_new(task_priority_t priority, vmm_aspace_t *aspace);
+```
 - Allocate space for tcb struct on heap   
 - Generate task_id   
 - Allocate kernel_stack      
 - Update task tree structure      
 
-## Task destroing   
+### Task destroing  
+```c
+void task_destroy(task_t *tcb);
+```
 - Destroy task_id and kernel_stack   
 - Destroy task address space     
 - Kill all task childs
 - Update task tree structure   
 - Release tcb struct memory   
 
-## Task switching 
+### Task switching 
+```c
+void task_switch(void);
+void task_switch_to(task_t *task);
+```
 **Automatical switch:**   
 
 - If actual_task->next == NULL and it's not an empty task
