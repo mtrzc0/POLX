@@ -101,7 +101,7 @@ int do_execve(task_t *t, char *path, char *const argv[])
 	/*
 		Replace task address space and destroy old one
 	*/
-	//vmm_aspace_destroy(t->aspace);
+	vmm_aspace_destroy(t->aspace);
 	t->aspace = as;
 	regs_set_pd(t->regs, as->pd);
 

@@ -62,9 +62,14 @@ static int _load_exe_format(vmm_aspace_t *as, vfs_node_ptr_t file, Elf32_Ehdr *h
 		/* Copy file to memory and fill gap with 0's */
 		if (phdr[i].p_memsz > phdr[i].p_filesz) {
 			ret = vmm_mmap_at(as, phdr[i].p_vaddr, file, phdr[i].p_offset,
-						       phdr[i].p_filesz, 0, flags);
-
-			if (ret < 0)
+						       phdr[i].p_filesz, phdr[i].p_filesz, flags);
+			
+			/* 
+			There is a posibility that p_filesz is equal 0, in which case vmm 
+			will not create a region and will return error with errno set to 0,
+			function should continue when such situation occur.
+			*/
+			if (ret < 0 && errno != 0)
 				return ret;
 
 			tmp_sz = phdr[i].p_memsz - phdr[i].p_filesz;
@@ -74,6 +79,9 @@ static int _load_exe_format(vmm_aspace_t *as, vfs_node_ptr_t file, Elf32_Ehdr *h
 
 			if (ret < 0)
 				return ret;
+
+			tmp_vaddr = phdr[i].p_vaddr + phdr[i].p_memsz;
+
 		} else {
 			/* Copy file to memory */
 			ret = vmm_mmap_at(as, phdr[i].p_vaddr, file, phdr[i].p_offset,

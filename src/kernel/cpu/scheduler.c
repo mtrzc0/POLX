@@ -38,7 +38,7 @@ static inline task_t *__find_in_queue(tid_t task_id, queue_t *q)
 
 static void _add_to_queue(task_t *t)
 {
-	/* Task can be added only on the end of llist */
+	/* Task can be added only at the end of llist */
 	queue_t *q;
 	
 	q = _set_queue(t);
