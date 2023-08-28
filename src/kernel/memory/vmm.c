@@ -151,14 +151,13 @@ static void _destroy_region(vmm_aspace_t *as, region_t *reg)
 	_remove_region(as, reg);
 	
 	/* Free physical memory */
-	if ((!(reg->flags & VMM_FORK)) || reg->fork_ctr == 0) {
-		tmp = reg->addr;
-		tmp = (tmp % PAGE_SIZE) ? tmp : tmp - (tmp % PAGE_SIZE);
-		while (tmp < reg->addr + reg->size) {
-			paddr = vmm_unmap_from(as->pd, tmp);
+	tmp = reg->addr;
+	tmp = (tmp % PAGE_SIZE) ? tmp : tmp - (tmp % PAGE_SIZE);
+	while (tmp < reg->addr + reg->size) {
+		paddr = vmm_unmap_from(as->pd, tmp);
+		if (paddr)
 			pmm_free_frame(paddr);
-			tmp += PAGE_SIZE;
-		}
+		tmp += PAGE_SIZE;
 	}
 	
 	kfree(reg);
@@ -175,19 +174,19 @@ static uintptr_t _vaddr_to_paddr(uintptr_t pd, uintptr_t vaddr)
 
 static void _fork_aspace(vmm_aspace_t *src, vmm_aspace_t *dst)
 {
+	uintptr_t vaddr, paddr;
 	region_t *tmp, *new;
-	uint32_t fork_flags;
 
 	tmp = src->first;
 	while (tmp != NULL) {
-		fork_flags = tmp->flags;
-		fork_flags |= VMM_FORK;
-		if (tmp->fork_ctr == 0)
-			tmp->fork_ctr += 2;
-		else
-			tmp->fork_ctr += 1;
-		
-		new = _create_region(tmp->addr, tmp->size, fork_flags);
+		vaddr = tmp->addr;
+		while (vaddr < (tmp->addr + tmp->size)) {
+			paddr = vmm_duplicate_page(src->pd, vaddr);
+			vmm_map_to(dst->pd, paddr, vaddr, tmp->flags | PG_PRESENT);
+			vaddr += PAGE_SIZE;
+		}
+
+		new = _create_region(tmp->addr, tmp->size, tmp->flags);
 		_insert_region(dst, new);
 
 		tmp = tmp->next;
@@ -243,6 +242,11 @@ int vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj,
 
 	if (! _is_area_free(as, vaddr, size)) {
 		errno = ENOMEM;
+		return -1;
+	}
+
+	if (size == 0) {
+		errno = 0;
 		return -1;
 	}
 
@@ -489,13 +493,7 @@ void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr)
 		return;
 	}
 
-	/* Task tried to write in forked PT */
-	if ((reg->flags & VMM_FORK) || reg->fork_ctr > 0) {
-		
-		kprintf("Task id: %d\n", actual_task->task_id);
-		panic("Task tried to write in forked PT, NOT IMPLEMENTED YET");
-	}
-
+	panic("CHUJ");
 	/* Map new frame into target as */
 	vmm_map_to(as->pd, pmm_get_frame(), vaddr, (reg->flags | PG_PRESENT));
 	as->page_counter++;

@@ -11,12 +11,11 @@
 //#define VMM_SHARED	0x1		/* DO NOT use with paging misc */
 #define VMM_RW		(0x1 << 1)	/* Compatible with paging misc */
 #define VMM_USER 	(0x1 << 2)	/* Compatible with paging misc */
-#define VMM_FORK	(0x1 << 3)	/* DO NOT use with paging misc */
+//#define VMM_FORK	(0x1 << 3)	/* DO NOT use with paging misc */
 
 struct vmm_region {
 	uintptr_t addr;
 	size_t size;
-	size_t fork_ctr;
 	uint32_t flags;
 
 	/* Linked list of regions */

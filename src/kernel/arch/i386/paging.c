@@ -48,6 +48,10 @@ static uint32_t _set_expd(uint32_t pd)
 	old = current_pd[_GET_PD_IDX(VM_EXPAGE_DIR)];
 	current_pd[_GET_PD_IDX(VM_EXPAGE_DIR)] = (pd | PG_PRESENT | PG_RW);
 	_INVLPG(VM_EXPAGE_DIR);
+	
+	/* Flush external_pts mappings from tlb */
+	for (uintptr_t i=VM_EXPAGE_TABLES; i < VM_EXPAGE_DIR; i += PAGE_SIZE)
+		_INVLPG(i);
 
 	return old;
 }
@@ -78,22 +82,6 @@ static void _clone_kernel_tables(uint32_t *dst_pd_vaddr)
 {
 	for (uint32_t i=_GET_PD_IDX(VM_KERN_START); i < _GET_PD_IDX(VM_KERN_END); i++)
 		dst_pd_vaddr[i] = kern_pd[i];
-}
-
-static void _clone_user_tables(uint32_t *src_pd, uint32_t *dst_pd)
-{
-	uint32_t addr, flags;
-	/* Set all PTs flags to read only */
-	for (uint32_t i=_GET_PD_IDX(VM_USER_START); i < _GET_PD_IDX(VM_USER_END); i++) {
-		if (_IS_FLAG_SET(src_pd[i], PG_RW)) {
-			addr = src_pd[i] & PG_ALIGN;
-			flags = src_pd[i] & (~PG_ALIGN);
-			flags ^= PG_RW;
-			dst_pd[i] = addr | flags;
-		} else {
-			dst_pd[i] = src_pd[i];
-		}
-	}
 }
 
 void pg_switch_pd(uint32_t new)
@@ -210,8 +198,10 @@ uint32_t pg_get_frame_from(uint32_t pd, uint32_t vaddr)
 
 uint32_t pg_create_directory(uint32_t parent_pd)
 {
-	uint32_t new_pd, old_tmp, old_tmp2;
-	uint32_t *pd_map, *pd_map_parent;
+	uint32_t new_pd, old_tmp;
+	uint32_t *pd_map;
+
+	(void)parent_pd;
 
 	/* Save old value */
 	old_tmp = pg_unmap(VM_TMP_MAP);
@@ -226,19 +216,7 @@ uint32_t pg_create_directory(uint32_t parent_pd)
 	pd_map[1023] = ((new_pd & PG_ALIGN) | PG_PRESENT | PG_RW);
 
 	_clone_kernel_tables(pd_map);
-	/* Fork address space */
-	if ((void *)parent_pd != NULL) {
-		old_tmp2 = pg_unmap(VM_TMP2_MAP);
-		pg_map(parent_pd, VM_TMP2_MAP, PG_KERN_PAGE_FLAG);
-		pd_map_parent = (uint32_t *)VM_TMP2_MAP;
-
-		/* Make both AS read only, COW mechanism */
-		_clone_user_tables(pd_map_parent, pd_map);
-		_clone_user_tables(pd_map, pd_map_parent);
-		
-		pg_map(old_tmp2, VM_TMP2_MAP, PG_KERN_PAGE_FLAG);
-	}
-
+	
 	/* Restore old value */
 	pg_map(old_tmp, VM_TMP_MAP, PG_KERN_PAGE_FLAG);
 	
