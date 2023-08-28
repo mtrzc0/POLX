@@ -102,7 +102,7 @@ void task_destroy(task_t *tcb)
 		tmp = tmp->next_sibling;
 		task_destroy(tmp2);
 	}
-	sched_remove(tcb);
+	//sched_remove(tcb);
 	_remove_child(tcb);
 
 	kfree(tcb);
@@ -124,8 +124,8 @@ void task_switch(void)
 	
 	sig_handler(next);
 	actual_task = next;
-	context_switch(&next->regs, next->kernel_stack);
 	kprintf("[DEBUG] Task switch to %d\n", next->task_id);
+	context_switch(&next->regs, next->kernel_stack);
 }
 
 void task_switch_to(task_t *task)
@@ -135,6 +135,8 @@ void task_switch_to(task_t *task)
 
 	sig_handler(task);
 	actual_task = task;
-	context_switch(&task->regs, task->kernel_stack);
 	kprintf("[DEBUG] Task force switch to %d\n", task->task_id);
+	if (task->task_id == 0)
+		panic("[DEBUG] End of all tasks");
+	context_switch(&task->regs, task->kernel_stack);
 }

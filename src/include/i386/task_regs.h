@@ -28,6 +28,9 @@ typedef struct task_regs task_regs_t;
 /* EAX - argc */
 /* EBX - argv address */
 
+void set_stack_pointer(uint32_t esp);
+uint32_t get_stack_pointer(void);
+
 #define regs_set_pd(regs_ptr, pd) \
 	(regs_ptr).cr3 = (pd)
 
@@ -42,6 +45,9 @@ typedef struct task_regs task_regs_t;
 
 #define regs_set_stack_pointer(regs_ptr, sp) \
 	(regs_ptr).esp = (sp)
+
+#define regs_get_stack_pointer(regs_ptr) \
+	({uint32_t esp; esp = (regs_ptr).esp; esp;})
 
 #define regs_set_execve_args(regs_ptr, argc, argv) \
 	(regs_ptr).eax = (argc); \

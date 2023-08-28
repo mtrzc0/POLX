@@ -53,6 +53,7 @@ ret_to_ring3:
 	mov edx, eax
 	pop eax
 
+	sti
 	; Jump into ring 3 :)
 	iret
 

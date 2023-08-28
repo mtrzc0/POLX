@@ -92,6 +92,8 @@ void sched_init(void)
 	sched_global.sleeping_tasks = 0;
 
 	kern = kmalloc(sizeof(task_t));
+	kern->kernel_stack = (uintptr_t) vmalloc(4096, MAPPED) + 0x1000;
+	regs_set_stack_pointer(kern->regs, kern->kernel_stack);
 	kern->task_id = 0;
 	kern->priority = OS;
 	kern->next = NULL;
