@@ -27,8 +27,18 @@ ret_to_ring3:
 	push eax
 	mov eax, DWORD [edx+0x4*6]  ; ESP
 	push eax
+	
+		; Enable interrupt in user mode
 	mov eax, DWORD [edx+0x4*9]  ; EFLAGS
+	pushf
 	push eax
+	popf
+	sti
+	pushf
+	pop eax
+	popf
+	push eax
+	
 	mov eax, DWORD [edx+0x4*12] ; CS
 	push eax
 	mov eax, DWORD [edx+0x4*8]  ; EIP
@@ -53,7 +63,6 @@ ret_to_ring3:
 	mov edx, eax
 	pop eax
 
-	sti
 	; Jump into ring 3 :)
 	iret
 

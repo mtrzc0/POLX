@@ -18,10 +18,12 @@ void timer_init(uint32_t freq)
 	outb(CH0, high);
 }
 
-void timer_isr(void)
+int timer_isr(void)
 {
 	tick++;
 	kprintf("tick\n");	
 	if (tick % 10 == 0)
-		task_switch();
+		return 1;
+	
+	return 0;
 }

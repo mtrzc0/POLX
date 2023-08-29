@@ -12,6 +12,6 @@
 
 
 void timer_init(uint32_t freq);
-void timer_isr(void);
+int timer_isr(void);
 
 #endif

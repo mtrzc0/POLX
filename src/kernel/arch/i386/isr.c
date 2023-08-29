@@ -57,22 +57,34 @@ static void _exception_handler(int_frame_t *int_frame)
 	default:
 		panic(exception_name[int_frame->int_number]);	
 	}
+
+	/* User mode task interrupted */
+	if (int_frame->eip < VM_KERN_START)
+		syscall_return(&actual_task->regs);
 }
 
 static void _irq_handler(int_frame_t *int_frame)
 {
+	
 	switch(int_frame->int_number) {
 	case IRQ0:
-		timer_isr();
+		if (timer_isr()) {
+			outb(PIC1_COMM, PIC_EOI);
+			task_switch();
+		}
 		break;
 	default:
 		kprintf("IRQ nr: %d not implemented\n", int_frame->int_number);
 	}
 
+	outb(PIC1_COMM, PIC_EOI);
 	if (int_frame->int_number >= 40)
 		outb(PIC2_COMM, PIC_EOI);
 	
-	outb(PIC1_COMM, PIC_EOI);
+	
+	/* User mode task interrupted */
+	if (int_frame->eip < VM_KERN_START)
+		syscall_return(&actual_task->regs);
 }
 
 static void _syscall_handler(void)
