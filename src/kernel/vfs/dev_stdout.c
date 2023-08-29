@@ -7,13 +7,14 @@ vfs_node_ptr_t dev_stdout;
 long _stdout_write(vfs_node_ptr_t node, size_t offset, char *buffer, size_t size)
 {
 	(void)node;
+	(void)offset;
 	size_t i;
 	char *src;
 
 	if (! is_terminal_initialized())
 		terminal_init();
 
-	src = (char *)(buffer + offset);
+	src = (char *)buffer;
 	for (i=0; i < size; i++) {
 		terminal_putchar(src[i]);
 	}
