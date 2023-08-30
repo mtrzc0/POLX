@@ -13,7 +13,7 @@ fork:
 	int 30h 
 
 	; errno
-	mov DWORD [errno], ebx
+	mov DWORD [errno], esi
 
 	leave
 	ret

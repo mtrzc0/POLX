@@ -107,7 +107,8 @@ static void _syscall_handler(void)
 		break;
 	case 2: // execve
 		ret_int = execve((char *)r->ebx, (char **)r->ecx);
-		regs_set_retval(*r, ret_int);
+		if (ret_int < 0)
+			regs_set_retval(*r, ret_int);
 		break;
 	case 3: // getpid
 		p = getpid();
@@ -157,7 +158,9 @@ static void _syscall_handler(void)
 	
 	}
 
-	regs_set_errno(*r, errno);
+	if (errno < 0)
+		regs_set_errno(*r, errno);
+	
 	syscall_return(r);
 }
 

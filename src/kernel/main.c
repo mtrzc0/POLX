@@ -14,6 +14,7 @@
 
 extern int errno;
 extern uint32_t kern_pd_paddr;
+extern task_t *kernel_task;
 
 uint32_t kernel_end;
 
@@ -64,6 +65,9 @@ void kernel_main(multiboot_info_t *mb)
 	//init->used_fd[0] = stdin_fd;
 	init->used_fd[1] = stdout_fd;
 	init->fd_ctr += 1;
+
+	kernel_task->used_fd[1] = stdout_fd;
+	kernel_task->fd_ctr += 1;
 
 	/* Execute init program */
 	sched_add_task(init);

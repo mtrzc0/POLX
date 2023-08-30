@@ -10,7 +10,9 @@ typedef uint32_t pid_t;
 
 extern int _start(void);
 
+void exit(int status);
 pid_t fork(void);
+int execve(const char *path, char *const argv[]);
 
 long write(int fd, const void *buff, size_t size);
 

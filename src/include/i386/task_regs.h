@@ -22,11 +22,11 @@ typedef struct task_regs task_regs_t;
 
 /* Syscall end */
 /* EAX - Return value */
-/* EBX - errno */
+/* ESI - errno */
 
 /* execve arguments for _init */
-/* EAX - argc */
-/* EBX - argv address */
+/* ESI - argc */
+/* EDI - argv address */
 
 void set_stack_pointer(uint32_t esp);
 uint32_t get_stack_pointer(void);
@@ -38,7 +38,7 @@ uint32_t get_stack_pointer(void);
 	(regs_ptr).eax = (val)
 
 #define regs_set_errno(regs_ptr, err) \
-	(regs_ptr).ebx = (err)
+	(regs_ptr).esi = (err)
 
 #define regs_set_instruction_pointer(regs_ptr, ip) \
 	(regs_ptr).eip = (ip)
@@ -50,8 +50,8 @@ uint32_t get_stack_pointer(void);
 	({uint32_t esp; esp = (regs_ptr).esp; esp;})
 
 #define regs_set_execve_args(regs_ptr, argc, argv) \
-	(regs_ptr).eax = (argc); \
-	(regs_ptr).ebx = (argv)
+	(regs_ptr).esi = (argc); \
+	(regs_ptr).edi = (argv)
 
 #define regs_fork(src_ptr, dst_ptr) \
 	(dst_ptr).eax = (src_ptr).eax; \

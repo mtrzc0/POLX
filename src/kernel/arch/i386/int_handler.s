@@ -23,6 +23,8 @@ isr_%+%1:
 
 section .text
 int_wrapper:
+	cli
+
 	mov [frame_ptr], esp
 	pushad	; Save gp registers
 	

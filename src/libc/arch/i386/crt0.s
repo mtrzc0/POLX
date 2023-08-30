@@ -9,9 +9,9 @@ _start:
 	mov ebp, esp
 
 	; argv ptr
-	push ebx
+	push edi
 	; argc 
-	push eax
+	push esi
 
 	call main
 
