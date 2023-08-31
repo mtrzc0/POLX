@@ -119,8 +119,7 @@ task_t *sched_get_tcb(tid_t task_id)
 	if (t != NULL)
 		return t;
 
-	panic("[ERROR] Tried to use non-existent task");
-	return 0;
+	return NULL;
 }
 
 task_t *sched_get_next_task(void)

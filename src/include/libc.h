@@ -15,6 +15,7 @@ pid_t fork(void);
 int execve(const char *path, char *const argv[]);
 pid_t getpid(void);
 pid_t getppid(void);
+int waitpid(pid_t pid);
 
 
 long write(int fd, const void *buff, size_t size);

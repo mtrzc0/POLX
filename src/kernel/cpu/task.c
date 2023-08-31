@@ -112,7 +112,13 @@ void task_switch(void)
 {
 	task_t *next;
 
-	actual_task->state = READY;
+	/* 
+	   Task switch can be preformed from 
+	   task that was removed from CPU queue 
+	*/
+	if (actual_task->state == RUNNING)
+		actual_task->state = READY;
+	
 	next = actual_task->next;	
 	if (next == NULL) {
 		next = sched_get_next_task();
@@ -130,7 +136,9 @@ void task_switch(void)
 
 void task_switch_to(task_t *task)
 {
-	actual_task->state = READY;
+	if (actual_task->state == RUNNING)
+		actual_task->state = READY;
+	
 	task->state = RUNNING;
 
 	sig_handler(task);

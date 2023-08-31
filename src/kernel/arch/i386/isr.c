@@ -119,6 +119,7 @@ static void _syscall_handler(void)
 		regs_set_retval(*r, p);
 		break;
 	case 5: // waitpid
+		waitpid((int)r->ebx);
 		break;
 	case 6: // mmap
 		break;

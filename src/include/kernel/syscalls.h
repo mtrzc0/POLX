@@ -19,6 +19,9 @@ int do_execve(task_t *t, char *path, char *const argv[]);
 pid_t getpid(void);
 pid_t getppid(void);
 
+int do_waitpid(task_t *t, pid_t pid);
+int waitpid(pid_t pid);
+
 /* Memory */
 
 /* Inter-process comunication */

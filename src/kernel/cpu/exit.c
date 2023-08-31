@@ -26,7 +26,7 @@ void do_exit(task_t *t, int status)
 		task_switch_to(sched_get_next_task());
 		//panic("Halting system\n");
 	}
-
+	
 	/* Destroy used fds */
 	fd = 0;
 	while (t->fd_ctr > 0 && fd < MAX_FDS) {
@@ -49,6 +49,8 @@ void do_exit(task_t *t, int status)
 			   because parent want to know child
 			   exit_code 
 			*/
+			set_stack_pointer(regs_get_stack_pointer(kernel_task->regs));
+			task_switch_to(sched_get_next_task());
 			return;
 		}
 	}
