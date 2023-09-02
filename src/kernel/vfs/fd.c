@@ -17,8 +17,8 @@ void fd_remove(fd_t *fd)
 {
 	/* Remove first element in list */
 	if (fd->prev == NULL) {
-		first_fd = fd->next;
 		first_fd->prev = NULL;
+		first_fd = fd->next;
 		return;
 	}
 

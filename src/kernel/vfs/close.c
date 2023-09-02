@@ -7,6 +7,7 @@
 
 extern int errno;
 extern task_t *actual_task;
+extern task_t *kernel_task;
 
 int do_close(task_t *t, int fd)
 {
@@ -18,6 +19,12 @@ int do_close(task_t *t, int fd)
 		return -1;
 	}
 	fd_ptr = t->used_fd[fd];
+	
+	/* To prevent closing default FDs */
+	if (fd_ptr == kernel_task->used_fd[fd]) {
+		t->fd_ctr--;
+		return 0;
+	}
 
 	if (vfs_close(fd_ptr->vfs_node) < 0)
 		return -1;
