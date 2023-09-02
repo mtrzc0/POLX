@@ -18,6 +18,12 @@ pid_t getppid(void);
 int waitpid(pid_t pid);
 
 
+#define O_CREAT  1
+#define O_RDONLY 2
+#define O_WRONLY 4
+#define O_RDWR	 8
+
+int open(char *path, int flags);
 long write(int fd, const void *buff, size_t size);
 
 #endif

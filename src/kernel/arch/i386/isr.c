@@ -159,7 +159,7 @@ static void _syscall_handler(void)
 	
 	}
 
-	if (errno < 0)
+	if (errno > 0)
 		regs_set_errno(*r, errno);
 	
 	syscall_return(r);
