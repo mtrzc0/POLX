@@ -442,6 +442,7 @@ int vmm_copy_data_to(vmm_aspace_t *as, uintptr_t vaddr, void *buff, size_t size)
 
 	paddr = _vaddr_to_paddr(as->pd, vaddr);
 	if (! paddr) {
+		errno = EFAULT;
 		return -1;
 	}
 
@@ -457,6 +458,7 @@ int vmm_copy_data_to(vmm_aspace_t *as, uintptr_t vaddr, void *buff, size_t size)
 			vmm_unmap(VM_TMP_MAP);
 			paddr = _vaddr_to_paddr(as->pd, vaddr+i);
 			if (! paddr) {
+				errno = EFAULT;
 				vmm_map(old_tmp, VM_TMP_MAP, PG_KERN_PAGE_FLAG);
 				return -1;
 			}

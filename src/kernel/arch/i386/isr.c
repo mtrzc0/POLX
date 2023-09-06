@@ -136,6 +136,8 @@ static void _syscall_handler(void)
 		regs_set_retval(*r, fd);
 		break;
 	case 11: // read
+		ret_long = read(r->ebx, (void *)r->ecx, r->edx);
+		regs_set_retval(*r, ret_long);
 		break;
 	case 12: // write
 		ret_long = write(r->ebx, (void *)r->ecx, r->edx);

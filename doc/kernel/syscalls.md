@@ -107,6 +107,15 @@ int close(int fd);
 4. return success
 
 ### read
+**Syscall number: 11**   
+```c
+long read(int fd, void *buff, size_t size);
+```
+1. Check if fd exist
+2. Read _size_ bytes from _fd_ and write them into _buff_
+3. Update fd position
+4. return number of read bytes
+
 ### write
 **Syscall number: 12**
 ```c

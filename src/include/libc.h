@@ -25,6 +25,7 @@ int waitpid(pid_t pid);
 
 int open(char *path, int flags);
 int close(int fd);
+long read(int fd, void *buff, size_t size);
 long write(int fd, const void *buff, size_t size);
 
 #endif

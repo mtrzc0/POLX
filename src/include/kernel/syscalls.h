@@ -38,6 +38,9 @@ int do_open(task_t *t, char *path, int flags);
 int close(int fd);
 int do_close(task_t *t, int fd);
 
+long read(int fd, void *buff, size_t size);
+long do_read(task_t *t, int fd, void *buff, size_t size);
+
 long write(int fd, const void *buff, size_t size);
 long do_write(task_t *t, int fd, const void *buff, size_t size);
 #endif

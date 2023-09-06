@@ -1,6 +1,7 @@
 #include <kernel/syscalls.h>
 #include <kernel/task.h>
 #include <kernel/vmm.h>
+#include <kernel/vfs.h>
 #include <kernel/fd.h>
 #include <errno.h>
 
