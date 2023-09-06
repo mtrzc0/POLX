@@ -386,6 +386,7 @@ char *vmm_copy_string_from(vmm_aspace_t *as, uintptr_t vaddr, size_t max_len)
 		old_tmp = vmm_unmap(VM_TMP_MAP);
 		vmm_map(paddr, VM_TMP_MAP, PG_KERN_PAGE_FLAG);
 	} else {
+		errno = EFAULT;
 		return NULL;
 	}
 
@@ -402,6 +403,7 @@ char *vmm_copy_string_from(vmm_aspace_t *as, uintptr_t vaddr, size_t max_len)
 			if (!paddr) {
 				kfree(buff);
 				vmm_map(old_tmp, VM_TMP_MAP, PG_KERN_PAGE_FLAG);
+				errno = EFAULT;
 				return NULL;
 			}
 			vmm_map(paddr, VM_TMP_MAP, PG_KERN_PAGE_FLAG);
@@ -428,6 +430,7 @@ char *vmm_copy_string_from(vmm_aspace_t *as, uintptr_t vaddr, size_t max_len)
 	/* String is too long */
 	if (i == max_len) {
 		kfree(buff);
+		errno = E2BIG;
 		return NULL;
 	}
 	

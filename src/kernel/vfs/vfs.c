@@ -1,5 +1,6 @@
-#include <kernel/vfs.h>
 #include <kernel/namei.h>
+#include <kernel/klib.h>
+#include <kernel/vfs.h>
 #include <errno.h>
 
 vfs_node_ptr_t tree_root;
@@ -93,6 +94,8 @@ int vfs_remove(vfs_node_ptr_t node)
 
 	if (ret < 0)
 		errno = EACCES;
+
+	kfree(node);
 
 	return ret;
 }

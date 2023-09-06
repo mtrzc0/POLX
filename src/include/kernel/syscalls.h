@@ -43,4 +43,7 @@ long do_read(task_t *t, int fd, void *buff, size_t size);
 
 long write(int fd, const void *buff, size_t size);
 long do_write(task_t *t, int fd, const void *buff, size_t size);
+
+int remove(char *path);
+int do_remove(char *path);
 #endif

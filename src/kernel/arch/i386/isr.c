@@ -143,8 +143,9 @@ static void _syscall_handler(void)
 		ret_long = write(r->ebx, (void *)r->ecx, r->edx);
 		regs_set_retval(*r, ret_long);
 		break;
-	case 13:
-		// remove
+	case 13: // remove
+		ret_int = remove((char *)r->ebx);
+		regs_set_retval(*r, ret_int);
 		break;
 	case 14:
 		// mkdir

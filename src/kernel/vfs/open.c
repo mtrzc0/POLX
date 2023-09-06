@@ -80,11 +80,10 @@ int open(char *path, int flags)
 	int ret;
 	char *path_in_kernel_as;
 	
-	path_in_kernel_as = vmm_copy_string_from(actual_task->aspace, (uintptr_t)path, 1024);
-	if (path_in_kernel_as == NULL) {
-		errno = E2BIG;
+	path_in_kernel_as = vmm_copy_string_from(actual_task->aspace, 
+					(uintptr_t)path, MAX_PATH_LEN);
+	if (path_in_kernel_as == NULL)
 		return -1;
-	}
 	
 	ret = do_open(actual_task, path_in_kernel_as, flags);
 	kfree(path_in_kernel_as);

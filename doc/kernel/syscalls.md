@@ -127,6 +127,14 @@ long write(int fd, const void *buff, size_t size);
 4. return number of written bytes 
 
 ### remove
+**Syscall number: 13**   
+```c
+int remove(const char *path);
+```
+1. Check if file exist and its not opened by other task
+2. Send info to driver about removing file
+3. return success or -1 and set errno
+
 ### mkdir
 ### rmdir
 ### readdir
