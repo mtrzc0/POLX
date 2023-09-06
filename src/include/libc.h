@@ -24,6 +24,7 @@ int waitpid(pid_t pid);
 #define O_RDWR	 8
 
 int open(char *path, int flags);
+int close(int fd);
 long write(int fd, const void *buff, size_t size);
 
 #endif
