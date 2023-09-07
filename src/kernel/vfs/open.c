@@ -66,7 +66,7 @@ int do_open(task_t *t, char *path, int flags)
 	fd_num = _find_free_fd_num(t->used_fd);
 	/* No more free fd numbers */
 	if (fd_num < 0) {
-		errno = EBADF;
+		errno = EMFILE;
 		return -1;
 	}
 	t->used_fd[fd_num] = new_fd;

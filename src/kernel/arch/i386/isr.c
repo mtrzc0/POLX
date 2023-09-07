@@ -147,14 +147,17 @@ static void _syscall_handler(void)
 		ret_int = remove((char *)r->ebx);
 		regs_set_retval(*r, ret_int);
 		break;
-	case 14:
-		// mkdir
+	case 14: // mkdir
+		ret_int = mkdir((char *)r->ebx, r->ecx);
+		regs_set_retval(*r, ret_int);
 		break;
-	case 15:
-		// rmdir
+	case 15: // rmdir
+		ret_int = rmdir((char *)r->ebx);
+		regs_set_retval(*r, ret_int);
 		break;
-	case 16:
-		// readdir
+	case 16: // readdir
+		ret_int = readdir(r->ebx, (vfs_dirent_t *)r->ecx);
+		regs_set_retval(*r, ret_int);
 		break;
 	case 17:
 		// kill

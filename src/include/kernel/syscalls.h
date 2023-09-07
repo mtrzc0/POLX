@@ -2,6 +2,7 @@
 #define __syscalls_dot_H
 
 #include <kernel/task.h>
+#include <kernel/vfs.h>
 
 
 /* Tasks */
@@ -31,6 +32,7 @@ int waitpid(pid_t pid);
 #define O_RDONLY 2
 #define O_WRONLY 4
 #define O_RDWR	 8
+#define O_DIRECTORY 16
 
 int open(char *path, int flags);
 int do_open(task_t *t, char *path, int flags);
@@ -46,4 +48,13 @@ long do_write(task_t *t, int fd, const void *buff, size_t size);
 
 int remove(char *path);
 int do_remove(char *path);
+
+int mkdir(char *path, int mode);
+int do_mkdir(char *path, int mode);
+
+int rmdir(char *path);
+int do_rmdir(char *path);
+
+int readdir(int fd, vfs_dirent_t *dent);
+int do_readdir(task_t *t, int fd, vfs_dirent_t *dent);
 #endif

@@ -83,6 +83,13 @@ vfs_node_ptr_t namei_path_to_vfs_node(vfs_node_ptr_t root, char *path, vfs_node_
 
 	while (tmp != NULL) {
 		prev = tmp;
+
+		/* Return tree root */
+		if (fname[0] == '\0') {
+			*parent = tmp;
+			break;
+		}
+
 		tmp = _find_child(tmp, fname);
 		
 		/* Child not found */

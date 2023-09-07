@@ -54,6 +54,8 @@ static vfs_node_ptr_t _init_vnode(tar_hdr_t *ptr, size_t fsize)
 	
 	case TAR_DIR:
 		vnode->v_type = VFS_DIR;
+		vnode->op.open = &tarfs_open;
+		vnode->op.close = &tarfs_close;
 		vnode->op.readdir = &tarfs_readdir;
 		break;
 	default:
@@ -149,11 +151,11 @@ int tarfs_readdir(vfs_node_ptr_t node, size_t no, vfs_dirent_t *dent)
 		if (i == no) {
 			strncpy(dent->name, child->name, MAX_FILENAME);
 			dent->ino = child->ino;
-			return 0;
+			return 1;
 		}
 		i++;
 		child = child->next_sibling;
 	}
 
-	return -1;
+	return 0;
 }

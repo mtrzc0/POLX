@@ -129,12 +129,37 @@ long write(int fd, const void *buff, size_t size);
 ### remove
 **Syscall number: 13**   
 ```c
-int remove(const char *path);
+int remove(char *path);
 ```
 1. Check if file exist and its not opened by other task
 2. Send info to driver about removing file
 3. return success or -1 and set errno
 
 ### mkdir
+**Syscall number: 14**
+```c
+int mkdir(char *path, int mode);
+```
+1. Check if directory exist and path is correct
+2. Send info to driver to create directory
+3. return success or -1 and set errno
+
 ### rmdir
+**Syscall number: 15**   
+```c
+int rmdir(char *path);
+```
+1. Check if directory exist and it is not a mount point
+2. Check if directory is empty
+3. Send info to driver to remove directory
+4. return success or -1 and set errno
+
 ### readdir
+**Syscall number: 16**   
+```c
+int readdir(int fd, dirent_t *dent);
+```
+1. Check if fd exist and it points to directory
+2. Get dir entry indicated by file descriptor position
+3. Write created dir entry into dent
+4. return 1 if success, 0 if end of directory or -1 and set errno

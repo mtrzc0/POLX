@@ -89,13 +89,13 @@ int vfs_remove(vfs_node_ptr_t node)
 	if (node->op.remove)
 		ret = node->op.remove(node);
 
-	if (ret == 0)
+	if (ret == 0) {
 		namei_remove_child(node);
+		kfree(node);
+	}
 
 	if (ret < 0)
 		errno = EACCES;
-
-	kfree(node);
 
 	return ret;
 }
@@ -119,14 +119,15 @@ int vfs_mkdir(vfs_node_ptr_t p_node, vfs_node_ptr_t *node, char *name, int mode)
 
 int vfs_rmdir(vfs_node_ptr_t node)
 {
-	//TODO check for dir childrens
 	int ret = -1;
 
 	if (node->op.rmdir)
 		ret = node->op.rmdir(node);
 
-	if (ret == 0)
+	if (ret == 0) {
 		namei_remove_child(node);
+		kfree(node);
+	}
 
 	if (ret < 0)
 		errno = EACCES;
@@ -142,7 +143,7 @@ int vfs_readdir(vfs_node_ptr_t node, size_t no, vfs_dirent_t *dent)
 		ret = node->op.readdir(node, no, dent);
 
 	if (ret < 0)
-		errno = ENOENT;
+		errno = EACCES;
 
 	return ret;
 }

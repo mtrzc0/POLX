@@ -131,6 +131,8 @@ int ramfs_mkdir(vfs_node_ptr_t p_node, vfs_node_ptr_t *node, char *name, int mod
 
 	strncpy(vnode->name, name, MAX_FILENAME);
 	vnode->v_type = VFS_DIR;
+	vnode->op.open = &ramfs_open;
+	vnode->op.close = &ramfs_close;
 	vnode->op.touch = &ramfs_touch;
 	vnode->op.mkdir = &ramfs_mkdir;
 	vnode->op.rmdir = &ramfs_rmdir;
@@ -157,11 +159,11 @@ int ramfs_readdir(vfs_node_ptr_t node, size_t no, vfs_dirent_t *dent)
 		if (i == no) {
 			strncpy(dent->name, child->name, MAX_FILENAME);
 			dent->ino = child->ino;
-			return 0;
+			return 1;
 		}
 		i++;
 		child = child->next_sibling;
 	}
 
-	return -1;
+	return 0;
 }
