@@ -16,7 +16,7 @@ read:
 	mov ecx, DWORD [ebp+0xc]
 	mov edx, DWORD [ebp+0x10]
 
-	mov eax, 0xb
+	mov eax, 0xc
 
 	int 30h
 

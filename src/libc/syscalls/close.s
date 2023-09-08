@@ -12,7 +12,7 @@ close:
 
 	mov ebx, DWORD [ebp+0x8]
 	
-	mov eax, 0xa
+	mov eax, 0xb
 
 	int 30h
 

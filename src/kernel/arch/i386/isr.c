@@ -123,43 +123,45 @@ static void _syscall_handler(void)
 		break;
 	case 6: // mmap
 		break;
-	case 7: // brk
+	case 7: //munmap
 		break;
-	case 8: // sbrk
+	case 8: // brk
 		break;
-	case 9: // open
+	case 9: // sbrk
+		break;
+	case 10: // open
 		fd = open((char *)r->ebx, r->ecx);
 		regs_set_retval(*r, fd);
 		break;
-	case 10: // close
+	case 11: // close
 		fd = close(r->ebx);
 		regs_set_retval(*r, fd);
 		break;
-	case 11: // read
+	case 12: // read
 		ret_long = read(r->ebx, (void *)r->ecx, r->edx);
 		regs_set_retval(*r, ret_long);
 		break;
-	case 12: // write
+	case 13: // write
 		ret_long = write(r->ebx, (void *)r->ecx, r->edx);
 		regs_set_retval(*r, ret_long);
 		break;
-	case 13: // remove
+	case 14: // remove
 		ret_int = remove((char *)r->ebx);
 		regs_set_retval(*r, ret_int);
 		break;
-	case 14: // mkdir
+	case 15: // mkdir
 		ret_int = mkdir((char *)r->ebx, r->ecx);
 		regs_set_retval(*r, ret_int);
 		break;
-	case 15: // rmdir
+	case 16: // rmdir
 		ret_int = rmdir((char *)r->ebx);
 		regs_set_retval(*r, ret_int);
 		break;
-	case 16: // readdir
+	case 17: // readdir
 		ret_int = readdir(r->ebx, (vfs_dirent_t *)r->ecx);
 		regs_set_retval(*r, ret_int);
 		break;
-	case 17:
+	case 18:
 		// kill
 		break;
 	

@@ -14,7 +14,7 @@ open:
 	mov ebx, DWORD [ebp+0x8]
 	mov ecx, DWORD [ebp+0xc]
 
-	mov eax, 0x9
+	mov eax, 0xa
 
 	int 30h
 

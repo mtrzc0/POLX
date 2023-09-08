@@ -12,7 +12,7 @@ remove:
 
 	mov ebx, DWORD [ebp+0x8]
 
-	mov eax, 0xd
+	mov eax, 0xe
 
 	int 30h
 

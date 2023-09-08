@@ -66,6 +66,7 @@ int waitpid(pid_t pid)
 
 ## Memory syscalls
 ### mmap
+### munmap
 ### brk
 ### sbrk
 
@@ -74,7 +75,7 @@ int waitpid(pid_t pid)
 
 ## VFS syscalls
 ### open
-**Syscall number: 9**   
+**Syscall number: 10**   
 ```c
 #define O_CREAT  1
 #define O_RDONLY 2
@@ -97,7 +98,7 @@ int open(char *path, int flags);
 4. Return fd number
 
 ### close
-**Syscall number: 10**   
+**Syscall number: 11**   
 ```c
 int close(int fd);
 ```
@@ -107,7 +108,7 @@ int close(int fd);
 4. return success
 
 ### read
-**Syscall number: 11**   
+**Syscall number: 12**   
 ```c
 long read(int fd, void *buff, size_t size);
 ```
@@ -117,7 +118,7 @@ long read(int fd, void *buff, size_t size);
 4. return number of read bytes
 
 ### write
-**Syscall number: 12**
+**Syscall number: 13**
 ```c
 long write(int fd, const void *buff, size_t size);
 ```
@@ -127,7 +128,7 @@ long write(int fd, const void *buff, size_t size);
 4. return number of written bytes 
 
 ### remove
-**Syscall number: 13**   
+**Syscall number: 14**   
 ```c
 int remove(char *path);
 ```
@@ -136,7 +137,7 @@ int remove(char *path);
 3. return success or -1 and set errno
 
 ### mkdir
-**Syscall number: 14**
+**Syscall number: 15**
 ```c
 int mkdir(char *path, int mode);
 ```
@@ -145,7 +146,7 @@ int mkdir(char *path, int mode);
 3. return success or -1 and set errno
 
 ### rmdir
-**Syscall number: 15**   
+**Syscall number: 16**   
 ```c
 int rmdir(char *path);
 ```
@@ -155,7 +156,7 @@ int rmdir(char *path);
 4. return success or -1 and set errno
 
 ### readdir
-**Syscall number: 16**   
+**Syscall number: 17**   
 ```c
 int readdir(int fd, dirent_t *dent);
 ```

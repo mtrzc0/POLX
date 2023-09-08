@@ -14,7 +14,7 @@ mkdir:
 	mov ebx, DWORD [ebp+0x8]
 	mov ecx, DWORD [ebp+0xc]
 
-	mov eax, 0xe
+	mov eax, 0xf
 
 	int 30h
 

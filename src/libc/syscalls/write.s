@@ -16,7 +16,7 @@ write:
 	mov ecx, DWORD [ebp + 0xc]
 	mov edx, DWORD [ebp + 0x10]
 
-	mov eax, 0xc
+	mov eax, 0xd
 
 	int 30h 
 

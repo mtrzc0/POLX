@@ -12,7 +12,7 @@ rmdir:
 
 	mov ebx, DWORD [ebp+0x8]
 
-	mov eax, 0xf
+	mov eax, 0x10
 
 	int 30h
 

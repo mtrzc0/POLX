@@ -14,7 +14,7 @@ readdir:
 	mov ebx, DWORD [ebp+0x8]
 	mov ecx, DWORD [ebp+0xc]
 
-	mov eax, 0x10
+	mov eax, 0x11
 
 	int 30h
 
