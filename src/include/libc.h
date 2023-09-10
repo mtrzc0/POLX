@@ -19,6 +19,11 @@ pid_t getpid(void);
 pid_t getppid(void);
 int waitpid(pid_t pid);
 
+#define PROT_READ  1
+#define PROT_WRITE 2
+
+void *mmap(void *addr, size_t size, int prot, int fd, size_t offset);
+int munmap(void *addr);
 
 #define O_CREAT  1
 #define O_RDONLY 2

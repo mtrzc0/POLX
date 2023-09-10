@@ -61,3 +61,4 @@ Can be used to space allocation for DMA and paging structures.
 # Process perspective
 Process virtual memory is created by execve syscall, and can be managed by mmap, brk or sbrk syscalls.   
 ![process_virtual_memory](../../drawings/process_vm.png)
+Process mappings allocation starts at the end of stack.   

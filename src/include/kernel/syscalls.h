@@ -24,6 +24,15 @@ int do_waitpid(task_t *t, pid_t pid);
 int waitpid(pid_t pid);
 
 /* Memory */
+#define PROT_READ  1
+#define PROT_WRITE 2
+
+void *mmap(void *addr, size_t size, int prot, int fd, size_t offset);
+void *do_mmap(task_t *t, void *addr, size_t size, 
+			int prot, int fd, size_t offset);
+
+int munmap(void *addr);
+int do_munmap(task_t *t, void *addr);
 
 /* Inter-process comunication */
 

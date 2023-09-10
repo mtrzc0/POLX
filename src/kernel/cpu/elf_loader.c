@@ -41,7 +41,7 @@ static int _load_exe_format(vmm_aspace_t *as, vfs_node_ptr_t file, Elf32_Ehdr *h
 	Elf32_Phdr *phdr;
 	size_t tmp_sz;
 	uintptr_t tmp_vaddr;
-	int ret;
+	void *ret;
 
 	/* Load program headers table into memory */
 	phdr = (Elf32_Phdr *)kmalloc(sizeof(Elf32_Phdr) * hdr->e_phnum);
@@ -69,16 +69,16 @@ static int _load_exe_format(vmm_aspace_t *as, vfs_node_ptr_t file, Elf32_Ehdr *h
 			will not create a region and will return error with errno set to 0,
 			function should continue when such situation occur.
 			*/
-			if (ret < 0 && errno != 0)
-				return ret;
+			if (ret == NULL && errno != 0)
+				return -1;
 
 			tmp_sz = phdr[i].p_memsz - phdr[i].p_filesz;
 			tmp_vaddr = phdr[i].p_vaddr + phdr[i].p_filesz;
 			ret = vmm_mmap_at(as, tmp_vaddr, dev_zero, 0,
 						tmp_sz, phdr[i].p_align, flags);
 
-			if (ret < 0)
-				return ret;
+			if (ret == NULL)
+				return -1;
 
 			tmp_vaddr = phdr[i].p_vaddr + phdr[i].p_memsz;
 
@@ -87,8 +87,8 @@ static int _load_exe_format(vmm_aspace_t *as, vfs_node_ptr_t file, Elf32_Ehdr *h
 			ret = vmm_mmap_at(as, phdr[i].p_vaddr, file, phdr[i].p_offset,
 					      phdr[i].p_filesz, phdr[i].p_align , flags);
 
-			if (ret < 0)
-				return ret;
+			if (ret == NULL)
+				return -1;
 			
 			/* End of last loaded segment */
 			tmp_vaddr = phdr[i].p_vaddr + phdr[i].p_memsz;

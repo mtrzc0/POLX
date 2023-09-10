@@ -122,10 +122,10 @@ Free all objects in aspace and destroy task aspace struct.
 
 ### Map object at
 ```c
-int vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj,
+void *vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj,
                 size_t offset, size_t size, size_t align, uint32_t flags);
 ```
-Copy _size_ data from _obj_ + _offset_ to task address space at _vaddr_
+Copy _size_ data from _obj_ + _offset_ to task address space at _vaddr_, if _vaddr_ is equal NULL then find free space for allocation.
 
 ### Unmap object
 ```c

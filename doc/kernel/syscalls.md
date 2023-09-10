@@ -66,7 +66,28 @@ int waitpid(pid_t pid)
 
 ## Memory syscalls
 ### mmap
+**Syscall number: 6**   
+```c
+#define PROT_READ  1
+#define PROT_WRITE 2
+
+void *mmap(void *addr, size_t size, int prot, int fd, size_t offset);
+```
+1. Check if fd is valid and it points to a file
+2. Convert prot into flags understood by the VMM subsystem
+3. Call proper VMM function
+4. return address at fd was mapped or NULL if VMM failed to map file
+
 ### munmap
+**Syscall number: 7**   
+```c
+int munmap(void *addr);
+```
+1. Call proper VMM function
+2. return result
+
+**Warning: It works different then its linux counterpart, because it unmapping whole region at _addr_ and there is no posibility to unmap only the part of region.**   
+
 ### brk
 ### sbrk
 

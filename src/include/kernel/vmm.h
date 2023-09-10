@@ -74,7 +74,7 @@ void vmm_void_unmap(uintptr_t vaddr, size_t bytes);
 /* Virtual address space management */
 vmm_aspace_t *vmm_aspace_create(vmm_aspace_t *parent_as);
 void vmm_aspace_destroy(vmm_aspace_t *aspace);
-int vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj,
+void *vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj,
 		size_t offset, size_t size, size_t align, uint32_t flags);
 int vmm_munmap(vmm_aspace_t *as, uintptr_t vaddr);
 char *vmm_copy_string_from(vmm_aspace_t *as, uintptr_t vaddr, size_t max_len);

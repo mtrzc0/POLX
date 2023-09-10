@@ -3,6 +3,21 @@
 
 vfs_node_ptr_t dev_zero;
 
+int _zero_open(vfs_node_ptr_t node, int mode)
+{
+	(void)node;
+	(void)mode;
+
+	return 0;
+}
+
+int _zero_close(vfs_node_ptr_t node)
+{
+	(void)node;
+
+	return 0;
+}
+
 long _zero_read(vfs_node_ptr_t node, size_t offset, size_t size, char *buffer)
 {
 	(void)node;
@@ -31,6 +46,8 @@ vfs_node_ptr_t dev_zero_init(void)
 	
 	strncpy(vnode->name, "zero", 5);
 	vnode->v_type = VFS_CHRDEV;
+	vnode->op.open = &_zero_open;
+	vnode->op.close = &_zero_close;
 	vnode->op.read = &_zero_read;
 	vnode->op.write = &_zero_write;
 

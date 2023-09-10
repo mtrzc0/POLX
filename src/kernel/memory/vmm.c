@@ -163,6 +163,38 @@ static void _destroy_region(vmm_aspace_t *as, region_t *reg)
 	kfree(reg);
 }
 
+static uintptr_t _find_free_area(vmm_aspace_t *as, size_t size)
+{
+	uintptr_t vaddr;
+	region_t *reg;
+
+	/* Check address space from stack_end - 0x1000 to data_end + 0x1000 */
+	vaddr = as->stack_end - 0x1000 - size;
+	while (vaddr >= as->data_end + 0x1000) {
+		if (_is_area_free(as, vaddr, size)) {
+			return vaddr;
+		} else {
+		/* 
+		  It is more efficient to use found regions addr while
+		  moving back then doing it by subtracting future area size
+		  but if _find_region will not find region that mean
+		  there is a free space between regions and we have to,
+		  use subtraction technique to check if that space is
+		  sufficient 
+		*/
+			reg = _find_region(as, vaddr);
+			if (reg == NULL) {
+				vaddr -= size;
+			} else {
+				vaddr = reg->addr - size;
+			}
+		}
+	}
+
+	/* No free area found */
+	return (uintptr_t)NULL;
+}
+
 static uintptr_t _vaddr_to_paddr(uintptr_t pd, uintptr_t vaddr)
 {
 	uintptr_t paddr;
@@ -232,22 +264,42 @@ void vmm_aspace_destroy(vmm_aspace_t *aspace)
 	kfree(aspace);
 }
 
-int vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj, 
+void *vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj, 
 		size_t offset, size_t size, size_t align, uint32_t flags)
 {
 	region_t *region;
 	uintptr_t paddr, tmp, current_vaddr;
-	size_t rem_to_cpy, cpy_int, current_offset, page_ctr;
+	size_t rem_to_cpy, cpy_int, current_offset, page_ctr, aligned_size;
 	char *buffer;
 
-	if (! _is_area_free(as, vaddr, size)) {
+	/* Align region */
+	if (align == 0) {
+		align = 0x1000;
+	}
+	
+	aligned_size = size;
+	if (size % align != 0) {
+		aligned_size = (aligned_size - aligned_size % align) + align;
+		aligned_size = aligned_size - (vaddr % align);
+	}
+
+	/* Find free space for allocation */
+	if (vaddr == (uintptr_t)NULL) {
+		vaddr = _find_free_area(as, aligned_size);
+		if (vaddr == (uintptr_t)NULL) {
+			errno = ENOMEM;
+			return NULL;
+		}
+	}
+
+	if (! _is_area_free(as, vaddr, aligned_size)) {
 		errno = ENOMEM;
-		return -1;
+		return NULL;
 	}
 
 	if (size == 0) {
 		errno = 0;
-		return -1;
+		return NULL;
 	}
 
 	tmp = vmm_unmap(VM_TMP2_MAP);
@@ -279,7 +331,7 @@ int vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj,
 		if (vfs_read(obj, current_offset, cpy_int, buffer) < 0) {
 			vmm_unmap(VM_TMP2_MAP);
 			vmm_map(tmp, VM_TMP2_MAP, PG_KERN_PAGE_FLAG);
-			return -1;
+			return NULL;
 		}
 		
 		/* Save changes to dst PD */
@@ -292,23 +344,13 @@ int vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj,
 		vmm_unmap(VM_TMP2_MAP);
 	}
 
-	/* Align region */
-	if (align == 0) {
-		align = 0x1000;
-	}
-	
-	if (size % align != 0) {
-		size = (size - size % align) + align;
-		size = size - (vaddr % align);
-	}
-
-	region = _create_region(vaddr, size, flags);
+	region = _create_region(vaddr, aligned_size, flags);
 	_insert_region(as, region);
 	as->page_counter += page_ctr;
 
 	/* Restore previous value of VM_TMP2_MAP */
 	vmm_map(tmp, VM_TMP2_MAP, PG_KERN_PAGE_FLAG);
-	return 0;
+	return (void *)region->addr;
 }
 
 int vmm_munmap(vmm_aspace_t *as, uintptr_t vaddr)
@@ -498,7 +540,7 @@ void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr)
 		return;
 	}
 
-	panic("CHUJ");
+	panic("NOT YET");
 	/* Map new frame into target as */
 	vmm_map_to(as->pd, pmm_get_frame(), vaddr, (reg->flags | PG_PRESENT));
 	as->page_counter++;

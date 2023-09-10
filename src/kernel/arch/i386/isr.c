@@ -93,6 +93,7 @@ static void _syscall_handler(void)
 	pid_t p;
 	int fd, ret_int;
 	long ret_long;
+	void *ret_addr;
 
 	r = &actual_task->regs;
 
@@ -122,8 +123,12 @@ static void _syscall_handler(void)
 		waitpid((int)r->ebx);
 		break;
 	case 6: // mmap
+		ret_addr = mmap((void *)r->ebx, r->ecx, r->edx, r->esi, r->edi);
+		regs_set_retval(*r, (uint32_t)ret_addr);
 		break;
 	case 7: //munmap
+		ret_int = munmap((void *)r->ebx);
+		regs_set_retval(*r, ret_int);
 		break;
 	case 8: // brk
 		break;
