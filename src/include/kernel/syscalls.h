@@ -34,6 +34,12 @@ void *do_mmap(task_t *t, void *addr, size_t size,
 int munmap(void *addr);
 int do_munmap(task_t *t, void *addr);
 
+int brk(void *addr);
+int do_brk(task_t *t, void *addr);
+
+void *sbrk(intptr_t inc);
+void *do_sbrk(task_t *t, intptr_t inc);
+
 /* Inter-process comunication */
 
 /* Virtual file system */

@@ -89,7 +89,19 @@ int munmap(void *addr);
 **Warning: It works different then its linux counterpart, because it unmapping whole region at _addr_ and there is no posibility to unmap only the part of region.**   
 
 ### brk
+**Syscall number: 8**   
+```c
+int brk(void *addr);
+```
+1. Call proper VMM function
+
 ### sbrk
+**Syscall number: 9**   
+```c
+void *sbrk(intptr_t inc);
+```
+1. Increment actual data segment address by _inc_   
+2. Call proper VMM function   
 
 ## IPC syscalls
 ### kill
@@ -185,3 +197,5 @@ int readdir(int fd, dirent_t *dent);
 2. Get dir entry indicated by file descriptor position
 3. Write created dir entry into dent
 4. return 1 if success, 0 if end of directory or -1 and set errno
+
+### fseek

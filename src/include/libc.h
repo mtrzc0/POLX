@@ -24,6 +24,8 @@ int waitpid(pid_t pid);
 
 void *mmap(void *addr, size_t size, int prot, int fd, size_t offset);
 int munmap(void *addr);
+int brk(void *addr);
+void *sbrk(intptr_t inc);
 
 #define O_CREAT  1
 #define O_RDONLY 2

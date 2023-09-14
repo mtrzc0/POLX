@@ -17,6 +17,7 @@ Table of contents:
     - [Unmap object](#unmap-object)   
     - [Copy string from](#copy-string-from-target-as-to-kernel-as)   
     - [Copy data to](#copy-data-from-kernel-as-to-target-as)   
+    - [Set brk](#set-brk)   
     - [Set stack](#set-stack)   
     - [Page faut check](#user-page-fault-handler)   
 
@@ -46,6 +47,7 @@ typedef struct vmm_region region_t;
 struct vmm_aspace {
 	uintptr_t pd;
 	uintptr_t code_entry;
+    uintptr_t elf_end;      /* End of last loaded segment */
 	uintptr_t data_end;     /* End of data segment */
     
 	size_t page_counter;
@@ -145,6 +147,12 @@ Copy string from target AS into kmalloc buffer and return address of it.
 int vmm_copy_data_to(vmm_aspace_t *as, uintptr_t vaddr, void *buff, size_t size);
 ```
 Copy _size_ data from _buff_ to _as_ at _vaddr_
+
+### Set brk
+```c
+void *vmm_set_brk(vmm_aspace_t *as, uintptr_t vaddr);
+```
+Set _as_ data segment to _vaddr_ and modify region size.   
 
 ### Set stack
 ```c

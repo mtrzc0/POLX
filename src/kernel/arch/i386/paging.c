@@ -161,6 +161,8 @@ uint32_t pg_unmap(uint32_t vaddr)
 	if (paddr) {
 		current_pts[_GET_PT_IDX(vaddr)] = 0;
 		_INVLPG(vaddr);
+	} else {
+		return 0;
 	}
 
 	return paddr | PG_ALIGN;
@@ -178,6 +180,8 @@ uint32_t pg_unmap_from(uint32_t pd, uint32_t vaddr)
 		   Do NOT use _INVLPG here, bc it will 
 		   remove vaddr tlb entry of current pd 
 		*/
+	} else {
+		return 0;
 	}
 
 	_set_expd(old_pd);

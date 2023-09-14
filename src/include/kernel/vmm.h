@@ -26,6 +26,7 @@ typedef struct vmm_region region_t;
 struct vmm_aspace {
 	uintptr_t pd;
 	uintptr_t code_entry;
+	uintptr_t elf_end;	/* End of last loaded segment */
 	uintptr_t data_end;	/* End of data segment */
 	uintptr_t stack_end;
 
@@ -79,6 +80,7 @@ void *vmm_mmap_at(vmm_aspace_t *as, uintptr_t vaddr, vfs_node_ptr_t obj,
 int vmm_munmap(vmm_aspace_t *as, uintptr_t vaddr);
 char *vmm_copy_string_from(vmm_aspace_t *as, uintptr_t vaddr, size_t max_len);
 int vmm_copy_data_to(vmm_aspace_t *as, uintptr_t vaddr, void *buff, size_t size);
+void *vmm_set_brk(vmm_aspace_t *as, uintptr_t vaddr);
 void vmm_set_stack(vmm_aspace_t *as, uintptr_t stack_end, size_t size);
 void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr);
 #endif

@@ -225,6 +225,7 @@ static void _fork_aspace(vmm_aspace_t *src, vmm_aspace_t *dst)
 	}
 
 	dst->code_entry = src->code_entry;
+	dst->elf_end = src->elf_end;
 	dst->data_end = src->data_end;
 	dst->stack_end = src->stack_end;
 	dst->stack_size = src->stack_size;
@@ -519,6 +520,101 @@ int vmm_copy_data_to(vmm_aspace_t *as, uintptr_t vaddr, void *buff, size_t size)
 	vmm_map(old_tmp, VM_TMP_MAP, PG_KERN_PAGE_FLAG);
 
 	return i;
+}
+
+void *vmm_set_brk(vmm_aspace_t *as, uintptr_t vaddr)
+{
+	uintptr_t old_brk, tmp_vaddr, paddr;
+	size_t new_size, prog_size, ctr;
+	region_t *reg;
+
+	/* We cannot override elf segment! */
+	if (vaddr < as->elf_end) {
+		errno = ENOMEM;
+		return NULL;
+	}
+	
+	old_brk = as->data_end;
+
+	/* Initialize region for data segment */
+	if (as->data_end == as->elf_end && vaddr >= as->data_end) {
+		/* Align size to page border */
+		new_size = vaddr - as->data_end;
+		prog_size = new_size;
+
+		if (new_size % 0x1000 != 0)
+			new_size = (new_size - new_size % 0x1000) + 0x1000;
+
+		if (! _is_area_free(as, as->data_end, new_size)) {
+			errno = ENOMEM;
+			return NULL;
+		}
+
+		reg = _create_region(as->data_end, new_size, VMM_RW | VMM_USER);
+		_insert_region(as, reg);
+		goto end;
+	}
+
+	reg = _find_region(as, as->elf_end + 1);
+	if (reg == NULL)
+		panic("[BUG] There is no data segment!");
+	
+	/* Expand data segment */
+	if (vaddr > as->data_end) {
+		new_size = vaddr - as->data_end;
+		prog_size = new_size;
+
+		/* Expansion can fit in already created region */
+		if (vaddr <= reg->addr + reg->size)
+			goto end;
+		
+		/* Check if we can expand region */
+		if (reg->next != NULL) {
+			if (new_size % 0x1000 != 0)
+				new_size = (new_size - new_size % 0x1000) + 0x1000;
+			
+			if (reg->addr + reg->size + new_size <= reg->next->addr) {
+				reg->size += new_size;
+				goto end;
+			} else {
+				errno = ENOMEM;
+				return NULL;
+			}
+		}
+	}
+
+	/* Shrink data segment */
+	new_size = as->data_end - vaddr;
+	if (as->data_end - new_size > as->elf_end) {
+		/* Do not release any pages */
+		if (new_size < PAGE_SIZE) {
+			as->data_end -= new_size;
+			return (void *)old_brk;
+		}
+
+		ctr = (size_t)(new_size / PAGE_SIZE);
+		tmp_vaddr = reg->addr + reg->size;
+		for (size_t i=0; i < ctr; i++) {
+			paddr = vmm_unmap_from(as->pd, tmp_vaddr);
+			if ((void *)paddr != NULL)
+				pmm_free_frame(paddr);
+
+			tmp_vaddr -= PAGE_SIZE;
+		}
+	
+		reg->size -= ctr * PAGE_SIZE;	
+		as->data_end -= new_size;
+		return (void *)old_brk;
+	} else {
+		errno = ENOMEM;
+		return NULL;
+	}
+	
+
+end:
+	as->data_end += prog_size;
+
+	return (void *)old_brk;
 }
 
 void vmm_set_stack(vmm_aspace_t *as, uintptr_t stack_end, size_t size)

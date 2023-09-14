@@ -35,6 +35,14 @@ static bool _is_elf_file(Elf32_Ehdr *hdr)
 	return true;
 }
 
+static uintptr_t _align_vaddr(uintptr_t vaddr, Elf32_Word align)
+{
+	if (vaddr % align != 0)
+		vaddr = (vaddr - vaddr % align) + align;
+
+	return vaddr;
+}
+
 static int _load_exe_format(vmm_aspace_t *as, vfs_node_ptr_t file, Elf32_Ehdr *hdr)
 {
 	Elf32_Word flags;
@@ -72,15 +80,17 @@ static int _load_exe_format(vmm_aspace_t *as, vfs_node_ptr_t file, Elf32_Ehdr *h
 			if (ret == NULL && errno != 0)
 				return -1;
 
-			tmp_sz = phdr[i].p_memsz - phdr[i].p_filesz;
 			tmp_vaddr = phdr[i].p_vaddr + phdr[i].p_filesz;
+			tmp_sz = phdr[i].p_memsz - phdr[i].p_filesz;
 			ret = vmm_mmap_at(as, tmp_vaddr, dev_zero, 0,
 						tmp_sz, phdr[i].p_align, flags);
+			tmp_vaddr = _align_vaddr(tmp_vaddr, phdr[i].p_align);
 
 			if (ret == NULL)
 				return -1;
 
 			tmp_vaddr = phdr[i].p_vaddr + phdr[i].p_memsz;
+			tmp_vaddr = _align_vaddr(tmp_vaddr, phdr[i].p_align);
 
 		} else {
 			/* Copy file to memory */
@@ -92,10 +102,12 @@ static int _load_exe_format(vmm_aspace_t *as, vfs_node_ptr_t file, Elf32_Ehdr *h
 			
 			/* End of last loaded segment */
 			tmp_vaddr = phdr[i].p_vaddr + phdr[i].p_memsz;
+			tmp_vaddr = _align_vaddr(tmp_vaddr, phdr[i].p_align);
 		}
 	}
 
 	as->code_entry = hdr->e_entry;
+	as->elf_end = tmp_vaddr;
 	as->data_end = tmp_vaddr;
 
 	kfree(phdr);

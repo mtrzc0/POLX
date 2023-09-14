@@ -131,8 +131,12 @@ static void _syscall_handler(void)
 		regs_set_retval(*r, ret_int);
 		break;
 	case 8: // brk
+		ret_int = brk((void *)r->ebx);
+		regs_set_retval(*r, ret_int);
 		break;
 	case 9: // sbrk
+		ret_addr = sbrk(r->ebx);
+		regs_set_retval(*r, (uint32_t)ret_addr);
 		break;
 	case 10: // open
 		fd = open((char *)r->ebx, r->ecx);
