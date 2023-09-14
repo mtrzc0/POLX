@@ -236,12 +236,22 @@ void pg_destroy_directory(uint32_t pd)
 void pg_page_fault_handler(uint32_t err_code)
 {
 	uint32_t vaddr;
+	unsigned int vmm_err;
 
 	vaddr = _get_cr2_value();
 
 	/* Page fault in user mode */
 	if (err_code & PG_USER) {
-		vmm_page_fault_handler(actual_task->aspace, vaddr);
+		/* Translate err_code into VMM_ERR codes */
+		vmm_err = 0;
+		if (! (err_code & PG_PRESENT))
+			vmm_err |= VMM_ERR_PR;
+		if (err_code & PG_RW)
+			vmm_err |= VMM_ERR_WR;
+		else
+			vmm_err |= VMM_ERR_RD;
+
+		vmm_page_fault_handler(actual_task->aspace, vaddr, vmm_err);
 	} else {
 	/* Page fault in kernel mode */
 		if (vaddr < 0x1000)

@@ -162,5 +162,10 @@ Fill proper fileds in _as_ with given values
 
 ### User page fault handler
 ```c
-void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr);
+/* Page fault errors */
+#define VMM_ERR_PR	(0x1 << 1)	/* Non-present page */
+#define VMM_ERR_RD	(0x1 << 2)	/* Caused by read access */
+#define VMM_ERR_WR	(0x1 << 3)	/* Caused by write access */
+
+void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr, unsigned int err);
 ```

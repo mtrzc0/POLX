@@ -623,7 +623,7 @@ void vmm_set_stack(vmm_aspace_t *as, uintptr_t stack_end, size_t size)
 	as->stack_size = size;
 }
 
-void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr)
+void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr, unsigned int err)
 {
 	region_t *reg;
 	task_t *t;
@@ -636,10 +636,17 @@ void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr)
 		return;
 	}
 
-	panic("NOT YET");
+	/* Read only region (SEGFAULT) */
+	if (err & VMM_ERR_WR && !(reg->flags & VMM_RW)) {
+		sig_send(t, SIGSEGV);
+		return;
+	}
+
 	/* Map new frame into target as */
-	vmm_map_to(as->pd, pmm_get_frame(), vaddr, (reg->flags | PG_PRESENT));
-	as->page_counter++;
+	if (err & VMM_ERR_PR) {
+		vmm_map_to(as->pd, pmm_get_frame(), vaddr, (reg->flags | PG_PRESENT));
+		as->page_counter++;
+	}
 }
 
 

@@ -13,6 +13,11 @@
 #define VMM_USER 	(0x1 << 2)	/* Compatible with paging misc */
 //#define VMM_FORK	(0x1 << 3)	/* DO NOT use with paging misc */
 
+/* Page fault errors */
+#define VMM_ERR_PR	(0x1 << 1)	/* Non-present page */
+#define VMM_ERR_RD	(0x1 << 2)	/* Caused by read access */
+#define VMM_ERR_WR	(0x1 << 3)	/* Caused by write access */
+
 struct vmm_region {
 	uintptr_t addr;
 	size_t size;
@@ -82,5 +87,5 @@ char *vmm_copy_string_from(vmm_aspace_t *as, uintptr_t vaddr, size_t max_len);
 int vmm_copy_data_to(vmm_aspace_t *as, uintptr_t vaddr, void *buff, size_t size);
 void *vmm_set_brk(vmm_aspace_t *as, uintptr_t vaddr);
 void vmm_set_stack(vmm_aspace_t *as, uintptr_t stack_end, size_t size);
-void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr);
+void vmm_page_fault_handler(vmm_aspace_t *as, uintptr_t vaddr, unsigned int err);
 #endif
