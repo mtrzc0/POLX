@@ -49,6 +49,10 @@ void *do_sbrk(task_t *t, intptr_t inc);
 #define O_RDWR	 8
 #define O_DIRECTORY 16
 
+#define SEEK_SET 0
+#define SEEK_CUR 1
+#define SEEK_END 2
+
 int open(char *path, int flags);
 int do_open(task_t *t, char *path, int flags);
 
@@ -72,4 +76,7 @@ int do_rmdir(char *path);
 
 int readdir(int fd, vfs_dirent_t *dent);
 int do_readdir(task_t *t, int fd, vfs_dirent_t *dent);
+
+long lseek(int fd, long offset, int whence);
+long do_lseek(task_t *t, int fd, long offset, int whence);
 #endif

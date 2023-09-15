@@ -198,4 +198,15 @@ int readdir(int fd, dirent_t *dent);
 3. Write created dir entry into dent
 4. return 1 if success, 0 if end of directory or -1 and set errno
 
-### fseek
+### lseek
+**Syscall number: 18**   
+```c
+#define SEEK_SET 0
+#define SEEK_CUR 1
+#define SEEK_END 2
+
+long lseek(int fd, long offset, int whence);
+```
+1. Chceck if fd exist and it points to file
+2. Change _fd_ position by _offset_ depending on _whence_
+3. return current _fd_ position if success or -1 and set errno   

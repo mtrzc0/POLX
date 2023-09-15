@@ -33,6 +33,10 @@ void *sbrk(intptr_t inc);
 #define O_RDWR	 8
 #define O_DIRECTORY 16
 
+#define SEEK_SET 0
+#define SEEK_CUR 1
+#define SEEK_END 2
+
 struct dirent {
 	char name[MAX_FILENAME];
 	size_t ino;
@@ -46,4 +50,5 @@ int remove(char *path);
 int mkdir(char *path, int mode);
 int rmdir(char *path);
 int readdir(int fd, struct dirent *dent);
+long lseek(int fd, long offset, int whence);
 #endif

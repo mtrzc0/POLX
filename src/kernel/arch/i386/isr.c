@@ -170,8 +170,9 @@ static void _syscall_handler(void)
 		ret_int = readdir(r->ebx, (vfs_dirent_t *)r->ecx);
 		regs_set_retval(*r, ret_int);
 		break;
-	case 18:
-		// kill
+	case 18: // lseek
+		ret_long = lseek(r->ebx, r->ecx, r->edx);
+		regs_set_retval(*r, ret_long);
 		break;
 	
 	}
