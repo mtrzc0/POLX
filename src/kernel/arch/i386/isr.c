@@ -7,6 +7,7 @@
 #include <kernel/klib.h>
 #include <kernel/task.h>
 #include <kernel/syscalls.h>
+#include <dev/keyboard.h>
 #include <dev/timer.h>
 
 int errno;
@@ -72,6 +73,9 @@ static void _irq_handler(int_frame_t *int_frame)
 			outb(PIC1_COMM, PIC_EOI);
 			task_switch();
 		}
+		break;
+	case IRQ1:
+		keyboard_isr();
 		break;
 	default:
 		kprintf("IRQ nr: %d not implemented\n", int_frame->int_number);

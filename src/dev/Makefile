@@ -1,6 +1,7 @@
 include ../Makefile.inc
 
 DIRS = ./terminal \
+	./keyboard \
 	./timer
 
 all: 

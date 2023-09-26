@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <kernel/klib/stdio.h>
 #include <dev/terminal/vga_text_mode.h>
+#include <dev/terminal/terminal.h>
 
 static uint16_t vga_entry(unsigned char uc, uint8_t color)
 {
@@ -60,4 +61,55 @@ void vga_move_row_up(uint16_t *vga_buffer, size_t row)
 		dst = &vga_buffer[(row-1) * VGA_WIDTH];
 		_mov_row(src, dst);
 	}
+}
+
+int vga_copy_line(uint16_t *vga_buffer, size_t start_x,
+			size_t start_y, size_t len, char *buffer)
+{
+	size_t idx;
+	uint16_t *src;
+
+	if (start_y * VGA_WIDTH + start_x + len > TERMINAL_MAX_LINE_LEN)
+		return -1;
+
+	src = &vga_buffer[start_y * VGA_WIDTH + start_x];
+	idx = 0;
+	while (idx < len) {
+		buffer[idx] = (char)(src[idx] & 0xff);
+		idx++;
+	}
+
+	return 0;
+}
+
+int vga_paste_line(uint16_t *vga_buffer, size_t start_x, size_t start_y, 
+				 size_t len, char *buffer, uint8_t color)
+{
+	size_t idx, buffer_idx;
+	uint16_t *dst;
+
+	if (start_y * VGA_WIDTH + start_x + len > TERMINAL_MAX_LINE_LEN)
+		return -1;
+
+	dst = &vga_buffer[start_y * VGA_WIDTH + start_x];
+	idx = 0;
+	buffer_idx = 0;
+	while (buffer_idx < len) {
+		if (buffer[buffer_idx] == '\0') {
+			buffer_idx++;
+			continue;
+		}
+
+		dst[idx] = vga_entry(buffer[buffer_idx], color);
+		
+		buffer_idx++;
+		idx++;
+	}
+
+	while (idx < buffer_idx) {
+		dst[idx] = vga_entry(' ', color);
+		idx++;
+	}
+
+	return 0;
 }

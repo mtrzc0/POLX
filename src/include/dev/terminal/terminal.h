@@ -6,9 +6,13 @@
 #include "vga_text_mode.h"
 #include "cursor.h"
 
+#define TERMINAL_MAX_LINE_LEN (VGA_WIDTH * VGA_HEIGHT)
+
 struct terminal_info {
 	bool is_initialized;
 	uint16_t *vga_buffer;
+	char stdin_line[TERMINAL_MAX_LINE_LEN+1];
+	size_t stdin_len;
 	uint8_t terminal_color;
 	cursor_t terminal_cursor;
 };
@@ -25,6 +29,8 @@ void terminal_init(void);
 
 /* Put char on screen with newline char respect */
 void terminal_putchar(char c);
+
+void terminal_putchar_from_keyboard(char c);
 
 /* Put string ended with \0 on screen */
 void terminal_writestring(const char *string);

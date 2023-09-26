@@ -45,4 +45,20 @@ void vga_clear_row(uint16_t *vga_buffer, size_t row, uint8_t color);
 
 /* Move specified row to previous row */
 void vga_move_row_up(uint16_t *vga_buffer, size_t row);
+
+/* 
+ Copy line into buffer and translate it into ASCII
+ Return value:
+ 	0 if success -1 if tried to copy outside of vga buffer
+*/
+int vga_copy_line(uint16_t *vga_buffer, size_t start_x, 
+			size_t start_y, size_t len, char *buffer);
+
+/* 
+ Paste line without '\0' chars from buffer and translate it into vga entry
+ Return value:
+ 	0 if success -1 if tried to paste outside of vga buffer
+*/
+int vga_paste_line(uint16_t *vga_buffer, size_t start_x, size_t start_y,
+				 size_t len, char *buffer, uint8_t color);
 #endif

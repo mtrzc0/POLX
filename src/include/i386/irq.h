@@ -15,6 +15,7 @@
 #define ICW4		0x1
 
 #define IRQ0		0x20
+#define IRQ1		0x21
 #define IRQ8		0x28
 
 #define IRQ_QUANTITY	0x10

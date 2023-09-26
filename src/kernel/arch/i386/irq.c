@@ -23,6 +23,8 @@ void irq_set_int(uint16_t number, bool mask)
 	uint16_t port;
 	uint8_t value;
 
+	number &= 0x0f;
+
 	if (number < 8) {
 		port = PIC1_DATA;
 	} else {
