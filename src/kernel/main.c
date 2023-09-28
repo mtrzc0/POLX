@@ -23,7 +23,7 @@ void kernel_main(multiboot_info_t *mb)
 	multiboot_module_t *mods;
 	vmm_aspace_t *init_as;
 	task_t *init;
-	fd_t *stdout_fd;
+	fd_t *stdout_fd, *stdin_fd;
 	char *argv[2];
 
 	/* Initialize GDT, IDT, PMM and so on */
@@ -54,7 +54,14 @@ void kernel_main(multiboot_info_t *mb)
 		panic("[ERROR] Failed to load init program");
 	
 	/* Initialize stdin, stdout file descriptors */
+	extern vfs_node_ptr_t dev_stdin;
 	extern vfs_node_ptr_t dev_stdout;
+	
+	stdin_fd = kmalloc(sizeof(fd_t));
+	stdin_fd->position = 0;
+	stdin_fd->mode = O_RDONLY;
+	stdin_fd->vfs_node = dev_stdin;
+	fd_add(stdin_fd);
 	
 	stdout_fd = kmalloc(sizeof(fd_t));
 	stdout_fd->position = 0;
@@ -62,12 +69,13 @@ void kernel_main(multiboot_info_t *mb)
 	stdout_fd->vfs_node = dev_stdout;
 	fd_add(stdout_fd);
 
-	//init->used_fd[0] = stdin_fd;
+	init->used_fd[0] = stdin_fd;
 	init->used_fd[1] = stdout_fd;
-	init->fd_ctr += 1;
+	init->fd_ctr += 2;
 
+	kernel_task->used_fd[0] = stdin_fd;
 	kernel_task->used_fd[1] = stdout_fd;
-	kernel_task->fd_ctr += 1;
+	kernel_task->fd_ctr += 2;
 
 	/* Execute init program */
 	sched_add_task(init);

@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <kernel/devfs.h>
 #include <kernel/klib.h>
 
 #include <dev/terminal/terminal.h>
@@ -166,8 +167,16 @@ void terminal_putchar_from_keyboard(char c)
 		cursor_move_right(cursor, 1);
 		break;
 	case '\n':
+		if (vga_copy_line(terminal.vga_buffer, cursor->line_x, cursor->line_y,
+		    				cursor->chars_ctr, terminal.stdin_line) < 0) {
+			panic("[BUG] Terminal tried to copy line outside of vga buffer!\n");
+		}
+		terminal.stdin_len = cursor->chars_ctr;
+
 		if (cursor_newline_kbd(cursor) == MAX_HEIGHT)
 			_terminal_scroll();
+	
+		dev_stdin_recall(terminal.stdin_line, terminal.stdin_len);
 		break;
 	case BACKSPACE:
 		if (cursor->chars_ctr == 0 || cursor->position_ctr == 0)

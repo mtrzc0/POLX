@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define stdin  0
 #define stdout 1
 
 #define MAX_FILENAME 128

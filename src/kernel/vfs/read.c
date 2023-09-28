@@ -8,6 +8,7 @@
 
 extern int errno;
 extern task_t *actual_task;
+extern task_t *kernel_task;
 
 long do_read(task_t *t, int fd, void *buff, size_t size)
 {
@@ -28,6 +29,10 @@ long do_read(task_t *t, int fd, void *buff, size_t size)
 		errno = EPERM;
 		return -1;
 	}
+
+	/* STDIN */
+	if (fd_ptr == kernel_task->used_fd[fd])
+		vfs_read(fd_ptr->vfs_node, fd_ptr->position, size, buff);
 
 	src = vmalloc(size, MAPPED);
 	read_data = vfs_read(fd_ptr->vfs_node, fd_ptr->position, size, src);

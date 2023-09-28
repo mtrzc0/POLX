@@ -39,6 +39,12 @@ extern vfs_node_ptr_t dev_zero;
 ```
 "/dev/zero" same feautures as unix counterpart  
 
+### stdin
+```c
+extern vfs_node_ptr_t dev_stdin;
+```
+"/dev/sdtin" same features as unix counterpart
+
 ### stdout
 ```c
 extern vfs_node_ptr_t dev_stdout;

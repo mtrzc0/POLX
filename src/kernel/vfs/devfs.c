@@ -64,5 +64,6 @@ vfs_node_ptr_t devfs_remove_dev(char *name)
 void _init_pseudo_devs(void)
 {
 	namei_add_child(devdir, dev_zero_init());
+	namei_add_child(devdir, dev_stdin_init());
 	namei_add_child(devdir, dev_stdout_init());
 }
