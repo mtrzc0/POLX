@@ -22,10 +22,10 @@ Terminal - simple device controlled by stdio pseudo devices or directly by kerne
 # Getting input from user
 1. Call read syscall with file descriptor indicating stdin device as argument
 2. read syscall handler calls vfs_read which calls internal stdin_read function
-3. stdin_read put caller task into sleep queue and it will save its task_id   
+3. stdin_read put caller task into sleep queue and it save function call parameters   
 
 Now task will wait until user will provide input via keyboard and press enter key, in the meantime other programs will be scheduled and executed.
 
-4. If enter was pressed terminal calls SPECIAL stdin function
+4. If enter was pressed terminal calls dev_sdtin_recall function
 5. sdtin dev copy input line into task AS and set return value
 6. Then it remove task from sleep queue
