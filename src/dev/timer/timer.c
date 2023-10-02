@@ -21,7 +21,7 @@ void timer_init(uint32_t freq)
 int timer_isr(void)
 {
 	tick++;
-	kprintf("tick\n");	
+	//kprintf("tick\n");	
 	if (tick % 10 == 0)
 		return 1;
 	

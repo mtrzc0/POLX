@@ -39,6 +39,14 @@ The goal of this project is to create a simple one core concurrent operating sys
     - [x] Programs loader
     - [x] Syscalls wrappers
     - [ ] Basic functions
+        - [x] printf
+        - [x] readline
+        - [ ] fopen
+        - [ ] fclose
+        - [ ] fseek
+        - [ ] fread
+        - [ ] fwrite
+        - [x] strlen
 - [ ] **Operating system**
     - [ ] Init
     - [ ] User shell

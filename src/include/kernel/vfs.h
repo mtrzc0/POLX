@@ -3,8 +3,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
-
-#define MAX_FILENAME 128
+#include <kernel_limits.h>
 
 typedef struct vfs_node * vfs_node_ptr_t;
 

@@ -3,10 +3,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <kernel_limits.h>
 #include "vga_text_mode.h"
 #include "cursor.h"
-
-#define TERMINAL_MAX_LINE_LEN (VGA_WIDTH * VGA_HEIGHT)
 
 struct terminal_info {
 	bool is_initialized;

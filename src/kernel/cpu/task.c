@@ -130,7 +130,7 @@ void task_switch(void)
 	
 	sig_handler(next);
 	actual_task = next;
-	kprintf("[DEBUG] Task switch to %d\n", next->task_id);
+	//kprintf("[DEBUG] Task switch to %d\n", next->task_id);
 	context_switch(&next->regs, next->kernel_stack);
 }
 

@@ -1,9 +1,8 @@
 #ifndef __namei_dot_H
 #define __namei_dot_H
 
+#include <kernel_limits.h>
 #include <kernel/vfs.h>
-
-#define MAX_PATH_LEN 4096
 
 void namei_init(void);
 

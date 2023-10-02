@@ -1,13 +1,12 @@
-#ifndef __libc_dot_H
-#define __libc_dot_H
+#ifndef __libc_syscalls_dot_H
+#define __libc_syscalls_dot_H
 
 #include <stddef.h>
 #include <stdint.h>
+#include <kernel_limits.h>
 
 #define stdin  0
 #define stdout 1
-
-#define MAX_FILENAME 128
 
 typedef uint32_t pid_t;
 

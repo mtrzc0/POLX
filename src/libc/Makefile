@@ -3,7 +3,8 @@ LIBC_OUT = ../out/libc.a
 BUILD_DIR = ../build/libc
 INCLUDE_DIR = ../include
 SUB_DIRS := arch/$(ARCH) \
-		syscalls
+		stdio	\
+		string	\
 
 CSRC := $(shell find ./$(SUB_DIRS) -type f -name \*.c)
 COBJ := $(patsubst %.c, %.o, $(CSRC))
