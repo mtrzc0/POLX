@@ -40,6 +40,7 @@ The goal of this project is to create a simple one core concurrent operating sys
     - [x] Syscalls wrappers
     - [ ] Basic functions
         - [x] printf
+        - [x] perror
         - [x] readline
         - [ ] fopen
         - [ ] fclose
