@@ -39,6 +39,8 @@ The goal of this project is to create a simple one core concurrent operating sys
     - [x] Programs loader
     - [x] Syscalls wrappers
     - [ ] Basic functions
+        - [x] malloc
+        - [x] free
         - [x] printf
         - [x] perror
         - [x] readline

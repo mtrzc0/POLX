@@ -5,6 +5,7 @@ INCLUDE_DIR = ../include
 SUB_DIRS := arch/$(ARCH) \
 		stdio	\
 		string	\
+		stdlib
 
 CSRC := $(shell find ./$(SUB_DIRS) -type f -name \*.c)
 COBJ := $(patsubst %.c, %.o, $(CSRC))
