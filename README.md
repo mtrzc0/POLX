@@ -2,8 +2,8 @@
 The goal of this project is to create a simple one core concurrent operating system that allows you to understand how it works. It will be a ready-made model of the system with basic components installed. The included documentation should provide easy understanding of how the basic components of operating systems work together. This activity is intended to broaden practical knowledge of operating system design.
 
 ## Roadmap
-- [ ] **Kernel**
-    - [ ] Main function
+- [x] **Kernel**
+    - [x] Main function
     - [x] Architecture depend
         - [x] Bootstraping
         - [x] GTD
@@ -35,7 +35,7 @@ The goal of this project is to create a simple one core concurrent operating sys
         - [x] Timer
         - [x] PIC
         - [x] Keyboard
-- [ ] **Basic standard C library**
+- [x] **Basic standard C library**
     - [x] Programs loader
     - [x] Syscalls wrappers
     - [ ] Basic functions
@@ -51,6 +51,6 @@ The goal of this project is to create a simple one core concurrent operating sys
         - [ ] fwrite
         - [x] strlen
 - [ ] **Operating system**
-    - [ ] Init
+    - [x] Init
     - [ ] User shell
     - [ ] Shell misc programs
