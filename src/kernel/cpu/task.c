@@ -7,6 +7,7 @@
 static tid_t old_tid = 0;
 extern task_t *actual_task;
 extern task_t *kernel_task;
+extern SCHEDULER_INFO sched_global;
 task_t *task_tree_root = NULL;
 
 static inline tid_t _get_tid(void)
@@ -122,8 +123,21 @@ void task_switch(void)
 	next = actual_task->next;	
 	if (next == NULL) {
 		next = sched_get_next_task();
-		if (next == kernel_task)
-			return;
+		
+		/* 
+		   All tasks are asleep, 
+		   busy waiting for external events
+		*/
+		if (next == kernel_task) {
+			/* Enable interrupts and mask timer to avoid further task_switches */
+			ENABLE_INTERRUPTS;
+			irq_mask_int(IRQ0);
+			while(1) {
+				/* Switch to task if it will appear */
+				if (sched_global.running_tasks > 0)
+					task_switch();
+			}
+		}
 	}
 	
 	next->state = RUNNING;

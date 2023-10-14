@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#define ENABLE_INTERRUPTS \
+	__asm__ __volatile__("sti":::)
+
 typedef struct {
 	uint32_t int_number;
 	uint32_t err_code;
