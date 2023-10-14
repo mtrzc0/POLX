@@ -9,6 +9,7 @@
 #include <kernel/vfs.h>
 #include <kernel/fd.h>
 
+#include <kernel_limits.h>
 #include <errno.h>
 
 extern vfs_node_ptr_t dev_zero;
@@ -142,7 +143,7 @@ int execve(const char *path, char *const argv[])
 	char **argv_in_kernel_as, **argv_in_user_as;
 	size_t i, i_after_next_page;
 
-	path_in_kernel_as = vmm_copy_string_from(actual_task->aspace, (uintptr_t)path, 1024);
+	path_in_kernel_as = vmm_copy_string_from(actual_task->aspace, (uintptr_t)path, MAX_PATH_LEN);
 	if (path_in_kernel_as == NULL) {
 		errno = E2BIG;
 		return -1;
@@ -158,7 +159,7 @@ int execve(const char *path, char *const argv[])
 	old_tmp = vmm_unmap(VM_TMP_MAP);
 	vmm_map(paddr, VM_TMP_MAP, PG_KERN_PAGE_FLAG);
 	argv_in_user_as = (char **)(VM_TMP_MAP + ((uintptr_t)argv % PAGE_SIZE));
-	argv_in_kernel_as = (char **)kmalloc(sizeof(char *)*256);
+	argv_in_kernel_as = (char **)kmalloc(sizeof(char *)*MAX_ARGV);
 	
 	i = 0;
 	i_after_next_page = 0;

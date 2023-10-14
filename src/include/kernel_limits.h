@@ -11,4 +11,6 @@
 /* Maximum stdin line length that terminal will read */
 #define TERMINAL_MAX_LINE_LEN TERMINAL_RESOLUTION
 
+/* Maximum size of argv array in execve syscall */
+#define MAX_ARGV 256
 #endif
