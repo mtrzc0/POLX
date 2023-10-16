@@ -7,6 +7,7 @@
 char *readline(const char *prompt)
 {
 	char *buffer;
+	long len;
 
 	buffer = (char *)malloc(TERMINAL_MAX_LINE_LEN+1);
 	if (buffer == NULL) {
@@ -18,8 +19,12 @@ char *readline(const char *prompt)
 	if (prompt != NULL)
 		write(stdout, prompt, strlen(prompt));
 
-	if (read(stdin, buffer, TERMINAL_MAX_LINE_LEN) < 0)
+	len = read(stdin, buffer, TERMINAL_MAX_LINE_LEN);
+
+	if (len < 0)
 		return NULL;
+
+	buffer[len] = '\0';
 
 	return buffer;
 }
