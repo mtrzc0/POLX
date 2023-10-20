@@ -65,19 +65,13 @@ static void _terminal_insert_into_inputline(char c, size_t idx)
 	    cursor->chars_ctr, terminal.stdin_line) < 0) {
 		panic("[BUG] Terminal tried to copy line outside of vga buffer!\n");
 	}
-	
-	/* Paste up to idx */
-	if (vga_paste_line(terminal.vga_buffer, col, row, idx, 
-			  terminal.stdin_line, terminal.terminal_color) < 0) {
-		panic("[BUG] Terminal tried to paste line outside of vga buffer!\n");
-	}
 
 	_terminal_putentry(c);
 
 	len = cursor->chars_ctr - cursor->position_ctr;
 
 	/* Paste rest of inputline */
-	if (vga_paste_line(terminal.vga_buffer, idx+1, row, len,
+	if (vga_paste_line(terminal.vga_buffer, cursor->position_ctr+col+1, row, len,
 			  &terminal.stdin_line[idx], terminal.terminal_color) < 0) {
 		panic("[BUG] Terminal tried to paste line outside of vga buffer!\n");
 	}
