@@ -52,5 +52,5 @@ The goal of this project is to create a simple one core concurrent operating sys
         - [x] strlen
 - [ ] **Operating system**
     - [x] Init
-    - [ ] User shell
+    - [x] User shell
     - [ ] Shell misc programs
