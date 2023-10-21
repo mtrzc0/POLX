@@ -140,8 +140,10 @@ void terminal_putchar_from_keyboard(char c)
 		else
 			_terminal_putentry(c);
 		
-		if (cursor_nextchar_kbd(cursor) == MAX_HEIGHT)
+		if (cursor_nextchar_kbd(cursor) == MAX_HEIGHT) {
 			_terminal_scroll();
+			cursor->line_y--;
+		}
 
 		return;
 	}
