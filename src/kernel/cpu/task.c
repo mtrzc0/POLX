@@ -157,7 +157,7 @@ void task_switch_to(task_t *task)
 
 	sig_handler(task);
 	actual_task = task;
-	kprintf("[DEBUG] Task force switch to %d\n", task->task_id);
+	//kprintf("[DEBUG] Task force switch to %d\n", task->task_id);
 	if (task->task_id == 0)
 		panic("[DEBUG] End of all tasks");
 	context_switch(&task->regs, task->kernel_stack);

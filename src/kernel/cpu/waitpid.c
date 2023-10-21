@@ -24,7 +24,7 @@ int do_waitpid(task_t *t, pid_t pid)
 
 	sched_sleep_task(t->task_id);
 	
-	kprintf("[DEBUG] Task %d is waiting for child\n", t->task_id);
+	//kprintf("[DEBUG] Task %d is waiting for child\n", t->task_id);
 	
 	task_switch();
 

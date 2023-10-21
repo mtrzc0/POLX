@@ -31,7 +31,7 @@ The goal of this project is to create a simple one core concurrent operating sys
         - [ ] Signals
         - [ ] Shared memory
     - [x] Device drivers
-        - [x] VGA
+        - [x] Terminal
         - [x] Timer
         - [x] PIC
         - [x] Keyboard

@@ -20,7 +20,7 @@ void do_exit(task_t *t, int status)
 	sched_remove(t);
 	t->exit_code = status;
 
-	kprintf("[DEBUG] Task %d exited with %d code\n", actual_task->task_id, status);
+	//kprintf("[DEBUG] Task %d exited with %d code\n", actual_task->task_id, status);
 	
 	if (t->task_id == 1) {
 		task_switch_to(sched_get_next_task());
