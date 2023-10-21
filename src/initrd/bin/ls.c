@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 	if (fd < 1) {
 		printf("%s: cannot access %s", argv[0], argv[1]);
 		perror("");
-		exit(2);
+		exit(errno);
 	}
 
 	readdir_ret = readdir(fd, &dent);
@@ -29,6 +29,7 @@ int main(int argc, char **argv)
 			printf("%s ", dent.name);
 		readdir_ret = readdir(fd, &dent);
 	}
+	close(fd);
 
 	if (readdir_ret < 0) {
 		printf("%s: %s", argv[0], argv[1]);
