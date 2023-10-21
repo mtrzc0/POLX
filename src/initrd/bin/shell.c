@@ -82,6 +82,8 @@ int main()
 		
 		/* Shell commands */
 		switch (input_line[0]) {
+		case '\0':
+			continue;
 		case '$':
 			printf("Exit code: %d\n", child_ret);
 			continue;
