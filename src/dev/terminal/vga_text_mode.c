@@ -69,8 +69,13 @@ int vga_copy_line(uint16_t *vga_buffer, size_t start_x,
 	size_t idx;
 	uint16_t *src;
 
-	if (start_y * VGA_WIDTH + start_x + len > TERMINAL_MAX_LINE_LEN)
-		return -1;
+	if (start_y > 0) {
+		if ((start_y-1) * VGA_WIDTH + start_x + len > TERMINAL_MAX_LINE_LEN)
+			return -1;
+	} else {
+		if (start_x + len > TERMINAL_MAX_LINE_LEN)
+			return -1;
+	}
 
 	src = &vga_buffer[start_y * VGA_WIDTH + start_x];
 	idx = 0;
@@ -88,8 +93,13 @@ int vga_paste_line(uint16_t *vga_buffer, size_t start_x, size_t start_y,
 	size_t idx, buffer_idx;
 	uint16_t *dst;
 
-	if (start_y * VGA_WIDTH + start_x + len > TERMINAL_MAX_LINE_LEN)
-		return -1;
+	if (start_y > 0) {
+		if ((start_y-1) * VGA_WIDTH + start_x + len > TERMINAL_MAX_LINE_LEN)
+			return -1;
+	} else {
+		if (start_x + len > TERMINAL_MAX_LINE_LEN)
+			return -1;
+	}
 
 	dst = &vga_buffer[start_y * VGA_WIDTH + start_x];
 	idx = 0;
