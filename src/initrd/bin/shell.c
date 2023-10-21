@@ -7,6 +7,13 @@
 
 #define PROMPT "# "
 
+void _print_help(void)
+{
+	printf("Basic user shell for TrytonOS:\n");
+	printf("type '?' to print this message\n");
+	printf("type '$' to get exit code of previous program\n");
+}
+
 void _parse_input(char *input, char **argv)
 {
 	size_t start, argv_idx;
@@ -72,16 +79,27 @@ int main()
 			perror("");
 			continue;
 		}
+		
+		/* Shell commands */
+		switch (input_line[0]) {
+		case '\0':
+			continue;
+		case '$':
+			printf("Exit code: %d\n", child_ret);
+			continue;
+		case '?':
+			_print_help();
+			continue;
+		}
 
 		_parse_input(input_line, argv);
-		
+
 		child_ret = _execute_program(argv);
 		switch(child_ret) {
 		case 139:
 			printf("Segmentation fault\n");
 			break;
 		default:
-			printf("Program exit code: %d\n", child_ret);
 		}
 
 		free(input_line);

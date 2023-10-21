@@ -44,8 +44,6 @@ int do_open(task_t *t, char *path, int flags)
 			namei_path_to_filename(path, filename);
 			if (vfs_touch(file_parent, &file, filename, flags) < 0)
 				return -1;
-			else
-				namei_add_child(file_parent, file);	
 		} else {
 			errno = ENOENT;
 			return -1;
