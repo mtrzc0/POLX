@@ -134,8 +134,10 @@ void task_switch(void)
 			irq_mask_int(IRQ0);
 			while(1) {
 				/* Switch to task if it will appear */
-				if (sched_global.running_tasks > 0)
+				if (sched_global.running_tasks > 0) {
+					irq_unmask_int(IRQ0);
 					task_switch();
+				}
 			}
 		}
 	}
