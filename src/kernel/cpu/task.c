@@ -2,6 +2,7 @@
 #include <kernel/task.h>
 #include <kernel/arch.h>
 #include <kernel/signal.h>
+#include <kernel/syscalls.h>
 #include <kernel/scheduler.h>
 
 static tid_t old_tid = 0;
@@ -92,19 +93,18 @@ void task_destroy(task_t *tcb)
 {
 	task_t *tmp, *tmp2;
 
-	vfree((void *)(tcb->kernel_stack - 0x1000));
-	vmm_aspace_destroy(tcb->aspace);
-	vmm_destroy_directory(tcb->regs.cr3);
-
 	/* Kill all task childs */
 	tmp = tcb->first_child;	
 	while (tmp != NULL) {
 		tmp2 = tmp;
 		tmp = tmp->next_sibling;
-		task_destroy(tmp2);
+		do_exit(tmp2, SIGKILL);
 	}
-	//sched_remove(tcb);
 	_remove_child(tcb);
+	
+	vfree((void *)(tcb->kernel_stack - 0x1000));
+	vmm_aspace_destroy(tcb->aspace);
+	vmm_destroy_directory(tcb->regs.cr3);
 
 	kfree(tcb);
 }
