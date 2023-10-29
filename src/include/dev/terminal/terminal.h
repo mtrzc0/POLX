@@ -5,11 +5,14 @@
 #include <stdbool.h>
 #include <kernel_limits.h>
 #include "vga_text_mode.h"
+#include "terminal_api.h"
 #include "cursor.h"
 
 struct terminal_info {
 	bool is_initialized;
 	uint16_t *vga_buffer;
+	char command_buff[COMM_LEN];
+	size_t command_idx;
 	char stdin_line[TERMINAL_MAX_LINE_LEN+1];
 	size_t stdin_len;
 	uint8_t terminal_color;

@@ -79,6 +79,25 @@ static void _terminal_insert_into_inputline(char c, size_t idx)
 	terminal.stdin_len = cursor->chars_ctr + 1;
 }
 
+void _terminal_command_buff_clear(void)
+{
+	for (int i=0; i < COMM_LEN; i++)
+		terminal.command_buff[i] = 0;
+
+	terminal.command_idx = 0;
+}
+
+void _terminal_execute_command(void)
+{
+	switch(terminal.command_buff[1]) {
+	case COMM_TERM_CLR:
+		terminal_clear();
+		break;
+	default:
+		break;
+	}
+}
+
 bool is_terminal_initialized(void)
 {
 	return terminal.is_initialized;
@@ -98,6 +117,7 @@ void terminal_init(void)
 {
 	terminal.vga_buffer = (uint16_t *) VGA_BUFFER;
 	terminal.terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
+	terminal.command_idx = 0;
 	terminal.stdin_len = 0;
 	terminal_clear();
 	terminal.is_initialized = true;
@@ -105,6 +125,24 @@ void terminal_init(void)
 
 void terminal_putchar(char c)
 {
+	/* During command read */
+	if (c == (char)COMM_START || terminal.command_idx > 0) {
+		if (terminal.command_idx == COMM_LEN) {
+			_terminal_command_buff_clear();
+			return;
+		}
+		
+		if (c == (char)COMM_END) {
+			_terminal_execute_command();
+			_terminal_command_buff_clear();
+			return;
+		}
+
+		terminal.command_buff[terminal.command_idx] = c;
+		terminal.command_idx++;
+		return;
+	}
+
 	if (c == '\n') {
 		if (cursor_newline(&terminal.terminal_cursor) == MAX_HEIGHT) {
 			_terminal_scroll();
