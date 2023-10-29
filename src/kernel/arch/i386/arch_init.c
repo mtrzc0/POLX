@@ -16,6 +16,7 @@ void arch_init(multiboot_info_t *mb)
 	idt_install();
 	tss_init(GDT_KERN_DATA_OFFSET, 0);
 	timer_init(200);
+	irq_mask_int(IRQ0);
 
 	if (mb->mods_count > 0) {
 		mods = (multiboot_module_t *) (mb->mods_addr + VM_KERN_START);

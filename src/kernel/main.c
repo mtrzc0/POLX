@@ -79,5 +79,6 @@ void kernel_main(multiboot_info_t *mb)
 
 	/* Execute init program */
 	sched_add_task(init);
+	irq_unmask_int(IRQ0);
 	task_switch();
 }
