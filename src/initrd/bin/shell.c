@@ -18,6 +18,7 @@ void _parse_input(char *input, char **argv)
 {
 	size_t start, argv_idx;
 	long i, input_len;
+	int is_string;
 
 	/* Count null terminator */
 	input_len = strlen(input) + 1;
@@ -25,7 +26,20 @@ void _parse_input(char *input, char **argv)
 	i = 0;
 	start = 0;
 	argv_idx = 0;
+	is_string = 0;
 	while (i < input_len && argv_idx < MAX_ARGV-1) {
+		if (input[i] == '"' || is_string == 1) {
+			if (is_string == 0) {
+				is_string = 1;
+				start++;
+			} else if (input[i] == '"') {
+				is_string = 0;
+				input[i] = ' ';	
+			}
+			i++;
+			continue;
+		}
+
 		if (input[i] == ' ') {
 			input[i] = '\0';
 			argv[argv_idx] = &input[start];
