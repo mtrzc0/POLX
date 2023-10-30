@@ -34,6 +34,7 @@ iso:
 	mkdir -p $(ISO_DIR)/boot/grub
 	cp ./grub.cfg $(ISO_DIR)/boot/grub
 	cp $(BIN_DIR)/$(BIN_NAME) $(ISO_DIR)/boot
+	cp $(BIN_DIR)/$(INITRD_FILE) $(ISO_DIR)/boot
 	grub-mkrescue -o $(BIN_DIR)/$(ISO_NAME) $(ISO_DIR)
 
 run:
