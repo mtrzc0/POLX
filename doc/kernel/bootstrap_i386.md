@@ -74,7 +74,7 @@ Similar data structure to GDT but containing descriptors that inform processor w
 CPU specific data structure containing information about executing task. [To properly handle interrupts from ring 3 we fill only informations about kernel stack](https://en.wikipedia.org/wiki/Task_state_segment#Inner-level_stack_pointers). [Details](https://wiki.osdev.org/Task_State_Segment)   
 
 ## Timer initialization
-Initialize timer to X frequency and mask timer IRQ   
+Initialize timer on 200Hz frequency and mask timer IRQ   
 
 ## Physical Memory Manager initialization
 To initialize PMM we pass pointer to mb_info struct which contains information about available memory and labels from linker script which will mark memory used by kernel as inavailable.   

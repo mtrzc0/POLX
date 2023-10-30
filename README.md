@@ -28,7 +28,7 @@ The goal of this project is to create a simple one core concurrent operating sys
         - [x] Initrd
         - [x] Ramfs
     - [ ] Inter-process communication
-        - [ ] Signals
+        - [x] Signals (inside kernel only)
         - [ ] Shared memory
     - [x] Device drivers
         - [x] Terminal
@@ -38,19 +38,14 @@ The goal of this project is to create a simple one core concurrent operating sys
 - [x] **Basic standard C library**
     - [x] Programs loader
     - [x] Syscalls wrappers
-    - [ ] Basic functions
+    - [x] Basic functions
         - [x] malloc
         - [x] free
         - [x] printf
         - [x] perror
         - [x] readline
-        - [ ] fopen
-        - [ ] fclose
-        - [ ] fseek
-        - [ ] fread
-        - [ ] fwrite
         - [x] strlen
-- [ ] **Operating system**
+- [x] **Operating system**
     - [x] Init
     - [x] User shell
-    - [ ] Shell misc programs
+    - [x] Shell misc programs
