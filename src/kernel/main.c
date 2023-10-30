@@ -77,6 +77,12 @@ void kernel_main(multiboot_info_t *mb)
 	kernel_task->used_fd[1] = stdout_fd;
 	kernel_task->fd_ctr += 2;
 
+	/* Announcement */
+	kprintf("*******************************************************************************\n");
+	kprintf("Welcome to TrytonOS\n");
+	kprintf("This is a hobby project created by determined self-taught individual\n");
+	kprintf("*******************************************************************************\n");
+
 	/* Execute init program */
 	sched_add_task(init);
 	irq_unmask_int(IRQ0);
