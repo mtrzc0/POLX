@@ -10,6 +10,12 @@ pid_t getpid(void)
 
 pid_t getppid(void)
 {
-	return (pid_t)actual_task->parent->task_id;
+	pid_t p;
+	if (actual_task->parent != NULL)
+		p = (pid_t)actual_task->parent->task_id;
+	else
+		p = 0;
+
+	return p;
 }
 
