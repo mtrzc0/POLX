@@ -6,6 +6,9 @@
 #define ENABLE_INTERRUPTS \
 	__asm__ __volatile__("sti":::)
 
+#define CPU_PAUSE \
+	__asm__ __volatile__("hlt":::)
+
 typedef struct {
 	uint32_t int_number;
 	uint32_t err_code;

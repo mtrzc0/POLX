@@ -133,6 +133,8 @@ void task_switch(void)
 			ENABLE_INTERRUPTS;
 			irq_mask_int(IRQ0);
 			while(1) {
+				CPU_PAUSE;
+
 				/* Switch to task if it will appear */
 				if (sched_global.running_tasks > 0) {
 					irq_unmask_int(IRQ0);
