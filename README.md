@@ -1,6 +1,8 @@
 # **TrytonOS i386**
 The goal of this project is to create a simple one core concurrent operating system that allows you to understand how it works. It will be a ready-made model of the system with basic components installed. The included documentation should provide easy understanding of how the basic components of operating systems work together. This activity is intended to broaden practical knowledge of operating system design.
 
+![](./doc/drawings/trytonos_screenshot.png)
+
 ## Roadmap
 - [x] **Kernel**
     - [x] Main function

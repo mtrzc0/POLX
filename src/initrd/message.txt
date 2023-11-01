@@ -1,0 +1,12 @@
+This project was created for fun and to gain a better 
+knowledge of how the kernel works inside. 
+Kernel code is divided into modules responsible for managing 
+avaliable hardware, like cpu, memory and I/O system. 
+I hope that included documentation will help you to understand 
+how kernel modules works together to provide you a convinient
+interface to your hardware. I also believe that is easier 
+to understand that concept by studying a small kernel code 
+(or even better by writting your own implementation of it),
+than by wading through the huge code bases of today's kernels.
+
+If you will find some factual errors please let me know.
