@@ -1,9 +1,9 @@
 include Makefile.inc
 BUILD_DIR = ./build
 BIN_DIR = ./out
-BIN_NAME = os.bin
+BIN_NAME = kernel.bin
 ISO_DIR = $(BUILD_DIR)/iso
-ISO_NAME = os.iso
+ISO_NAME = TrytonOS.iso
 BUILD_DIR_TREE = $(BUILD_DIR) \
 		 $(BIN_DIR)
 MODULES_DIRS = 	./kernel \
