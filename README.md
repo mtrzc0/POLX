@@ -1,4 +1,4 @@
-This is based on ![TrytonOS i386](https://gitlab.com/Tryton77/trytonos) minimalistic x86 kernel
+This is based on [TrytonOS i386](https://gitlab.com/Tryton77/trytonos) minimalistic x86 kernel
 
 # **Polish Unix Distro - PUD**
 This project takes developer knowledge to the beyond which leads to create Unix-family kernel
