@@ -7,7 +7,7 @@ AR = llvm-ar
 LD = ld.lld
 
 ASMFLAGS = -f elf32
-CFLAGS = -Wunused-command-line-argument -ffreestanding -march=$(ARCH) -target $(TARGET) -fno-builtin -nostdlib -m32
+CFLAGS = -g -ffreestanding -march=$(ARCH) -target $(TARGET) -fno-builtin -nostdlib -m32
 LDFLAGS = -nostdlib 
 ARFLAGS = -rcs
 
