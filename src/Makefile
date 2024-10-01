@@ -16,7 +16,7 @@ all: os
 .PHONY: os build_modules clean run
 
 os: $(BUILD_DIR_TREE) build_modules
-	$(LD) $(LDFLAGS) -m elf_i386 -L out -T linker.ld -o $(BIN_DIR)/$(BIN_NAME) $(wildcard $(BUILD_DIR)/*.o)
+	$(LD) $(LDFLAGS) -L out -T linker.ld -o $(BIN_DIR)/$(BIN_NAME) $(wildcard $(BUILD_DIR)/*.o)
 
 $(BUILD_DIR_TREE):
 	mkdir $(BUILD_DIR_TREE)
