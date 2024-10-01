@@ -114,6 +114,7 @@ int main()
 			printf("Segmentation fault\n");
 			break;
 		default:
+            ;
 		}
 
 		free(input_line);

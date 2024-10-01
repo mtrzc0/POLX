@@ -56,6 +56,7 @@ int printf(const char *restrict format, ...)
 	va_list args;
 	size_t string_len, tmp;
 	char string[TERMINAL_RESOLUTION+1];
+    char *str;
 
 	va_start(args, format);
 	string_len = 0;
@@ -76,7 +77,7 @@ int printf(const char *restrict format, ...)
 				break;
 			case 's':
 				// TMP solution
-				char *str = va_arg(args, char *);
+				str = va_arg(args, char *);
 				for (size_t i=0; i < strlen(str) && string_len < TERMINAL_RESOLUTION; i++) {
 					string[string_len] = str[i];
 					string_len++;
