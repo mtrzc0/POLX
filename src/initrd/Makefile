@@ -1,4 +1,5 @@
-include ../Makefile.inc
+include ../conf.mk
+
 BUILD_DIR = ../build/initrd
 BIN_DIR = $(BUILD_DIR)/bin
 OUT_DIR = ../out

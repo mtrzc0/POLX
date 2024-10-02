@@ -1,4 +1,5 @@
-include ../Makefile.inc
+include ../conf.mk
+
 LIBC_OUT = ../out/libc.a
 BUILD_DIR = ../build/libc
 INCLUDE_DIR = ../include

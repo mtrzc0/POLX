@@ -1,8 +1,9 @@
-include Makefile.inc
+include conf.mk
 
 BUILD_DIR = ./build
 BIN_DIR = ./out
 BIN_NAME = kernel.bin
+ELF_NAME = kernel.elf
 ISO_DIR = $(BUILD_DIR)/iso
 ISO_NAME = TrytonOS.iso
 BUILD_DIR_TREE = $(BUILD_DIR) \
@@ -22,7 +23,7 @@ $(BUILD_DIR_TREE):
 	mkdir $(BUILD_DIR_TREE)
 
 build_modules:
-	for dir in $(MODULES_DIRS); do \
+	@for dir in $(MODULES_DIRS); do \
 		make -C $$dir; \
 	done
 
@@ -52,5 +53,5 @@ gdb:
 gdb-initrd:
 	qemu-system-i386 -m 512M -no-reboot -no-shutdown -s -S -kernel $(BIN_DIR)/$(BIN_NAME) -initrd $(BIN_DIR)/$(INITRD_FILE)
 
-debug:
+dump-reg:
 	qemu-system-i386 -m 512M -no-reboot -no-shutdown -monitor stdio -d int -kernel $(BIN_DIR)/$(BIN_NAME) -initrd $(BIN_DIR)/$(INITRD_FILE)

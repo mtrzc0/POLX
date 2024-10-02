@@ -1,4 +1,4 @@
-include ../Makefile.inc
+include ../conf.mk
 
 DIRS = ./terminal \
 	./keyboard \
