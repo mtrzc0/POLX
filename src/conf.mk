@@ -17,7 +17,7 @@ LD = ld.lld
 # flags
 ASMFLAGS = -f elf32
 CFLAGS = -ffreestanding -march=$(ARCH) -target $(TARGET) -fno-builtin -nostdlib -m32
-LDFLAGS = -nostdlib
+LDFLAGS = -nostdlib -z noexecstack
 ARFLAGS = -rcs
 INITRD_FILE = initrd.tar
 
