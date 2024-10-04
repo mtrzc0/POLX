@@ -13,6 +13,7 @@ COUT := $(patsubst %.c, %, $(CSRC))
 all: tree $(COUT)
 	@tar -C $(BUILD_DIR) -cf $(OUT_DIR)/$(INITRD_FILE) ./
 
+# TODO: refactor building initrd
 %: %.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -I$(INCLUDE_DIR) $< ../out/libc.a -o $(BIN_DIR)/$(notdir $@)
 
