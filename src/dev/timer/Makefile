@@ -1,4 +1,4 @@
-include ../../Makefile.inc
+include ../../conf.mk
 BUILD_DIR = ../../build
 INCLUDE_DIR = ../../include
 
